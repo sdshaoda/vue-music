@@ -24,7 +24,8 @@ module.exports = {
       '@': resolve('src'),
       // 别名
       'common': resolve('src/common'),
-      'components': resolve('src/components')
+      'components': resolve('src/components'),
+      'api': resolve('src/api')
     }
   },
   module: {
