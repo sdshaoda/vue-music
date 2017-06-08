@@ -26,6 +26,7 @@ var app = express()
 // 解决 jsonp 500错误
 var apiRoutes = express.Router()
 
+// 代理
 apiRoutes.get('/getDiscList', function (req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
 
