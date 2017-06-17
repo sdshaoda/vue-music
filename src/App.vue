@@ -2,7 +2,9 @@
   <div id="app">
     <m-header></m-header>
     <tab></tab>
+    <!--组件缓存-->
     <keep-alive>
+      <!--路由-->
       <router-view></router-view>
     </keep-alive>
   </div>

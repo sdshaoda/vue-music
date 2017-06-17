@@ -1,3 +1,4 @@
+// 公用请求头
 export const commonParams = {
   g_tk: 5381,
   inCharset: 'utf-8',
@@ -10,4 +11,5 @@ export const options = {
   param: 'jsonpCallback'
 }
 
+// 返回 '成功'
 export const ERR_OK = 0

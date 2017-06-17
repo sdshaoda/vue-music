@@ -10,6 +10,7 @@ import 'common/stylus/index.styl'
 // 解决移动端300ms延时问题
 fastclick.attach(document.body)
 
+// 懒加载
 Vue.use(VueLazyLoad, {
   loading: require('common/image/default.png')
 })

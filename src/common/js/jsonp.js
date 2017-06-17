@@ -1,5 +1,6 @@
 import originJSONP from 'jsonp'
 
+// 对jsonp进行Promise封装的方法
 export default function jsonp (url, data, option) {
   url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
 
@@ -14,6 +15,7 @@ export default function jsonp (url, data, option) {
   })
 }
 
+// 将数组拼接成 查询字符串
 function param (data) {
   let url = ''
   for (let k in data) {

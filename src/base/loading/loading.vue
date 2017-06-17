@@ -27,4 +27,3 @@ export default {
       font-size: $font-size-small
       color: $color-text-1
 </style>
-
