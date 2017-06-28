@@ -63,7 +63,7 @@ export default {
       let firstTouch = e.touches[0]
       this.touch.y1 = firstTouch.pageY
       this.touch.anchorIndex = anchorIndex
-      this.currentIndex = anchorIndex
+      // this.currentIndex = anchorIndex
       this._scrollTo(anchorIndex)
     },
     onShortcutTouchMove(e) {
@@ -72,13 +72,22 @@ export default {
       // Math.floor()  | 0
       let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
       let anchorIndex = this.touch.anchorIndex + delta
-      this.currentIndex = anchorIndex
+      // this.currentIndex = anchorIndex
       this._scrollTo(anchorIndex)
     },
     scroll(pos) {
       this.scrollY = pos.y
     },
     _scrollTo(index) {
+      if (!index && index !== 0) {
+        return
+      }
+      if (index < 0) {
+        index = 0
+      } else if (index > this.listHeight.length - 2) {
+        index = this.listHeight.length - 2
+      }
+      this.scrollY = -this.listHeight[index]
       // 滚动到相应位置，第二个参数为0表示无缓动动画效果
       this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
     },
