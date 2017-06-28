@@ -4,7 +4,7 @@
       <li v-for="(group, index) in data" :key="index" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="(item, index) in group.items" :key="index" class="list-group-item">
+          <li v-for="(item, index) in group.items" :key="index" class="list-group-item" @click="selectItem(item)">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -71,6 +71,10 @@ export default {
     this.probeType = 3
   },
   methods: {
+    selectItem(item) {
+      // 基础组件，不参与任何业务逻辑
+      this.$emit('select', item)
+    },
     onShortcutTouchStart(e) {
       // 从DOM属性中获得的是字符串，转换为数字
       let anchorIndex = parseInt(getData(e.target, 'index'))
