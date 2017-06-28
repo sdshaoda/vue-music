@@ -1,19 +1,20 @@
 <template>
-  <scroll class="listview" :data="data">
+  <scroll class="listview" ref="listview" :data="data" :listenScroll="listenScroll" :probeType="probeType" @scroll="scroll">
     <ul>
-      <li v-for="group in data" class="list-group">
+      <li v-for="(group, index) in data" :key="index" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="item in group.items" class="list-group-item">
-            <img class="avatar" v-lazy="item.avatar" />
+          <li v-for="(item, index) in group.items" :key="index" class="list-group-item">
+            <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
         </ul>
       </li>
     </ul>
-    <div class="list-shortcut" @touchstart="onShortcutTouchStart">
+    <!-- 滚动时阻止事件冒泡和浏览器默认行为 -->
+    <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
       <ul>
-        <li v-for="(item, index) in shortcutList" :data-index="index" class="item">
+        <li v-for="(item, index) in shortcutList" :key="index" :data-index="index" class="item" :class="{'current': currentIndex===index}">
           {{item}}
         </li>
       </ul>
@@ -25,11 +26,19 @@
 import Scroll from 'base/scroll/scroll'
 import { getData } from 'common/js/dom'
 
+const ANCHOR_HEIGHT = 18
+
 export default {
   props: {
     data: {
       type: Array,
       default: []
+    }
+  },
+  data() {
+    return {
+      scrollY: -1,
+      currentIndex: 0
     }
   },
   computed: {
@@ -39,9 +48,77 @@ export default {
       })
     }
   },
+  created() {
+    // 因为不需要这些值被 vue 监听，所以不放在 data 函数中
+    this.touch = {}
+    this.listenScroll = true
+    this.listHeight = []
+    this.probeType = 3
+  },
   methods: {
     onShortcutTouchStart(e) {
-      let anchorIndex = getData(e.target, 'index')
+      // 从DOM属性中获得的是字符串，转换为数字
+      let anchorIndex = parseInt(getData(e.target, 'index'))
+      // （多点）触控的第一个点的对象信息
+      let firstTouch = e.touches[0]
+      this.touch.y1 = firstTouch.pageY
+      this.touch.anchorIndex = anchorIndex
+      this.currentIndex = anchorIndex
+      this._scrollTo(anchorIndex)
+    },
+    onShortcutTouchMove(e) {
+      let firstTouch = e.touches[0]
+      this.touch.y2 = firstTouch.pageY
+      // Math.floor()  | 0
+      let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+      let anchorIndex = this.touch.anchorIndex + delta
+      this.currentIndex = anchorIndex
+      this._scrollTo(anchorIndex)
+    },
+    scroll(pos) {
+      this.scrollY = pos.y
+    },
+    _scrollTo(index) {
+      // 滚动到相应位置，第二个参数为0表示无缓动动画效果
+      this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
+    },
+    _calculateHeight() {
+      this.listHeight = []
+      const list = this.$refs.listGroup
+      let height = 0
+      this.listHeight.push(height)
+      for (let i = 0; i < list.length; i++) {
+        let item = list[i]
+        height += item.clientHeight
+        this.listHeight.push(height)
+      }
+    }
+  },
+  watch: {
+    data() {
+      // 确保 data 已正确插入
+      setTimeout(() => {
+        this._calculateHeight()
+      }, 20)
+    },
+    // 参数 newY 为 scrollY 变化后的新值
+    scrollY(newY) {
+      const listHeight = this.listHeight
+      // 顶部以上，newY > 0
+      if (newY > 0) {
+        this.currentIndex = 0
+        return
+      }
+      // 中间
+      for (let i = 0; i < listHeight.length - 1; i++) {
+        let height1 = listHeight[i]
+        let height2 = listHeight[i + 1]
+        if (-newY >= height1 && -newY < height2) {
+          this.currentIndex = i
+          return
+        }
+      }
+      this.currentIndex = this.listHeight - 2
     }
   },
   components: {

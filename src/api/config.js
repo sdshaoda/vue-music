@@ -11,5 +11,5 @@ export const options = {
   param: 'jsonpCallback'
 }
 
-// 返回 '成功'
+// 返回'成功'，语义化，便于维护
 export const ERR_OK = 0

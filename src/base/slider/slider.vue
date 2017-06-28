@@ -1,11 +1,12 @@
 <template>
   <div class="slider" ref="slider">
     <div class="slider-group" ref="sliderGroup">
+      <!--父组件中的内容将插入到slot所在的DOM位置，并替换掉slot标签本身-->
       <slot>
       </slot>
     </div>
     <div class="dots">
-      <span class="dot" v-for="(item, index) in dots" :class="{active:currentPageIndex === index}"></span>
+      <span class="dot" v-for="(item, index) in dots" :key="index" :class="{active:currentPageIndex === index}"></span>
     </div>
   </div>
 </template>
@@ -37,16 +38,19 @@ export default {
     }
   },
   mounted() {
+    // 同 this.$nextTick()，确保DOM已被渲染
     setTimeout(() => {
       this._setSliderWidth()
       this._initDots()
       this._initSlider()
 
+      // 初始轮播
       if (this.autoPlay) {
         this._play()
       }
     }, 20)
 
+    // 窗口大小改变后，重设slider
     window.addEventListener('resize', () => {
       if (!this.slider) {
         return
@@ -72,6 +76,7 @@ export default {
         width += sliderWidth
       }
 
+      // 循环轮播，初始时额外添加2个宽度
       if (this.loop && !isResize) {
         width += 2 * sliderWidth
       }
@@ -91,6 +96,7 @@ export default {
         snapSpeed: 400
       })
 
+      // 切换到下一张时触发
       this.slider.on('scrollEnd', () => {
         let pageIndex = this.slider.getCurrentPage().pageX
         if (this.loop) {
@@ -98,6 +104,7 @@ export default {
         }
         this.currentPageIndex = pageIndex
 
+        // 继续轮播
         if (this.autoPlay) {
           clearTimeout(this.timer)
           this._play()

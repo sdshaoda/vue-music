@@ -20,6 +20,11 @@ export default {
     data: {
       type: Array,
       default: null
+    },
+    // 是否监听滚动事件
+    listenScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -30,6 +35,7 @@ export default {
   },
   methods: {
     _initScroll() {
+      // 避免初始化时 undefined 报错
       if (!this.$refs.wrapper) {
         return
       }
@@ -37,7 +43,17 @@ export default {
         probeType: this.probeType,
         click: this.click
       })
+
+      if (this.listenScroll) {
+        // _this 为vue的实例
+        let _this = this
+        this.scroll.on('scroll', (pos) => {
+          // this 为 better-scroll 的实例
+          _this.$emit('scroll', pos)
+        })
+      }
     },
+    // 以下方法都是调用 better-scroll 封装的方法
     enable() {
       // 若存在 this.scroll ，则执行 this.scroll.enable()
       this.scroll && this.scroll.enable()
@@ -55,7 +71,9 @@ export default {
       this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
     }
   },
+  // props 和 data 中的数据都可被 watch 监听
   watch: {
+    // 监听 props.data 的变化，自动刷新
     data() {
       setTimeout(() => {
         this.refresh()

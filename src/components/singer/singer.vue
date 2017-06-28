@@ -16,6 +16,7 @@ const HOT_SINGER_LEN = 10
 export default {
   data() {
     return {
+      // 歌手列表数组
       singers: []
     }
   },
@@ -23,6 +24,7 @@ export default {
     this._getSingerList()
   },
   methods: {
+    // 获取歌手数据
     _getSingerList() {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
@@ -30,6 +32,7 @@ export default {
         }
       })
     },
+    // 格式化歌手数据
     _normalizeSinger(list) {
       let map = {
         hot: {

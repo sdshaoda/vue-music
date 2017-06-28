@@ -22,7 +22,7 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       '@': resolve('src'),
-      // 别名
+      // 设置引用别名
       'common': resolve('src/common'),
       'components': resolve('src/components'),
       'api': resolve('src/api'),

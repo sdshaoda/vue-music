@@ -6,12 +6,14 @@ import axios from 'axios'
 export function getRecommend () {
   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
 
+  // Object.assign() 用于对象的合并
   const data = Object.assign({}, commonParams, {
     platform: 'h5',
     uin: 0,
     needNewCode: 1
   })
 
+  // 返回的是Promise对象
   return jsonp(url, data, options)
 }
 
