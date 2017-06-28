@@ -19,14 +19,22 @@
         </li>
       </ul>
     </div>
+    <div class="list-fixed" v-show="fixedTitle" ref="fixedTitle">
+      <h1 class="fixed-title">{{fixedTitle}}</h1>
+    </div>
+    <div class="loading-container" v-show="!data.length">
+      <loading></loading>
+    </div>
   </scroll>
 </template>
 
 <script type="text/ecmascript-6">
 import Scroll from 'base/scroll/scroll'
+import Loading from 'base/loading/loading'
 import { getData } from 'common/js/dom'
 
 const ANCHOR_HEIGHT = 18
+const TITLE_HEIGHT = 30
 
 export default {
   props: {
@@ -38,7 +46,8 @@ export default {
   data() {
     return {
       scrollY: -1,
-      currentIndex: 0
+      currentIndex: 0,
+      diff: -1
     }
   },
   computed: {
@@ -46,6 +55,12 @@ export default {
       return this.data.map((item) => {
         return item.title.substr(0, 1)
       })
+    },
+    fixedTitle() {
+      if (this.scrollY > 0) {
+        return ''
+      }
+      return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
     }
   },
   created() {
@@ -63,7 +78,6 @@ export default {
       let firstTouch = e.touches[0]
       this.touch.y1 = firstTouch.pageY
       this.touch.anchorIndex = anchorIndex
-      // this.currentIndex = anchorIndex
       this._scrollTo(anchorIndex)
     },
     onShortcutTouchMove(e) {
@@ -72,7 +86,6 @@ export default {
       // Math.floor()  | 0
       let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
       let anchorIndex = this.touch.anchorIndex + delta
-      // this.currentIndex = anchorIndex
       this._scrollTo(anchorIndex)
     },
     scroll(pos) {
@@ -110,11 +123,11 @@ export default {
         this._calculateHeight()
       }, 20)
     },
-    // 参数 newY 为 scrollY 变化后的新值
-    scrollY(newY) {
+    // 参数 newScrollY 为 scrollY 变化后的新值
+    scrollY(newScrollY) {
       const listHeight = this.listHeight
-      // 顶部以上，newY > 0
-      if (newY > 0) {
+      // 顶部以上，newScrollY > 0
+      if (newScrollY > 0) {
         this.currentIndex = 0
         return
       }
@@ -122,16 +135,26 @@ export default {
       for (let i = 0; i < listHeight.length - 1; i++) {
         let height1 = listHeight[i]
         let height2 = listHeight[i + 1]
-        if (-newY >= height1 && -newY < height2) {
+        if (-newScrollY >= height1 && -newScrollY < height2) {
           this.currentIndex = i
+          this.diff = height2 + newScrollY
           return
         }
       }
       this.currentIndex = this.listHeight - 2
+    },
+    diff(newDiff) {
+      let fixedTop = (newDiff > 0 && newDiff < TITLE_HEIGHT) ? newDiff - TITLE_HEIGHT : 0
+      if (this.fixedTop === fixedTop) {
+        return
+      }
+      this.fixedTop = fixedTop
+      this.$refs.fixedTitle.style.transform = `translate3d(0, ${fixedTop}px, 0)`
     }
   },
   components: {
-    Scroll
+    Scroll,
+    Loading
   }
 }
 </script>
