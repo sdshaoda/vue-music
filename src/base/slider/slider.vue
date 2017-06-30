@@ -1,7 +1,7 @@
 <template>
   <div class="slider" ref="slider">
     <div class="slider-group" ref="sliderGroup">
-      <!--父组件中的内容将插入到slot所在的DOM位置，并替换掉slot标签本身-->
+      <!-- 父组件中的内容将插入到 slot 所在的 DOM 位置，并替换掉 slot 标签本身 -->
       <slot>
       </slot>
     </div>

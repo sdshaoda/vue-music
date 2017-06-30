@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     selectItem(item) {
-      // 基础组件，不参与任何业务逻辑
+      // 发送 'select' 事件，参数为 item
       this.$emit('select', item)
     },
     onShortcutTouchStart(e) {

@@ -9,10 +9,12 @@ import BScroll from 'better-scroll'
 
 export default {
   props: {
+    // 截流，是否派发某类型的滚动事件
     probeType: {
       type: Number,
       default: 1
     },
+    // 是否派发 click 事件
     click: {
       type: Boolean,
       default: true
@@ -28,7 +30,7 @@ export default {
     }
   },
   mounted() {
-    // 确保 DOM 已准备好，类似 window.onload nextTick
+    // 确保 DOM 已准备好，类似 window.onload / nextTick
     setTimeout(() => {
       this._initScroll()
     }, 20)

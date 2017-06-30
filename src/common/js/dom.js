@@ -24,3 +24,37 @@ export function getData (el, name, val) {
     return el.getAttribute(name)
   }
 }
+
+// 为 css 属性添加浏览器前缀
+let elementStyle = document.createElement('div').style
+
+let vendor = (() => {
+  let transformNames = {
+    standard: 'transform',
+    webkit: 'webkitTransform',
+    Moz: 'MozTransform',
+    O: 'OTransform',
+    ms: 'msTransform'
+  }
+
+  // 若 div 元素有此 css 属性，则用此键名为开头
+  for (let key in transformNames) {
+    if (elementStyle[transformNames[key]] !== undefined) {
+      return key
+    }
+  }
+
+  return false
+})()
+
+export function prefixStyle (style) {
+  if (vendor === false) {
+    return false
+  }
+
+  if (vendor === 'standard') {
+    return style
+  }
+
+  return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+}

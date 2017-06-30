@@ -31,6 +31,7 @@ export default {
       this.$router.push({
         path: `/singer/${singer.id}`
       })
+      // 调用 mutation 方法
       this.setSinger(singer)
     },
     // 获取歌手数据
@@ -87,6 +88,7 @@ export default {
 
       return hot.concat(ret)
     },
+    // mutation 映射
     ...mapMutations({
       setSinger: 'SET_SINGER'
     })
