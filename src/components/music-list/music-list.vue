@@ -22,6 +22,7 @@
       <div class="song-list-wrapper">
         <song-list :songs="songs"></song-list>
       </div>
+      <!-- 缓冲 -->
       <div class="loading-container" v-show="!songs.length">
         <loading></loading>
       </div>
@@ -37,7 +38,7 @@ import { prefixStyle } from 'common/js/dom'
 
 const RESERVED_HEIGHT = 40
 const transform = prefixStyle('transform')
-const backdrop = prefixStyle('backdrop-filter')
+const backdropFilter = prefixStyle('backdrop-filter')
 
 export default {
   props: {
@@ -104,7 +105,7 @@ export default {
       } else {
         blur = Math.min(20 * percent, 20)
       }
-      this.$refs.filter.style[backdrop] = `blur(${blur}px)`
+      this.$refs.filter.style[backdropFilter] = `blur(${blur}px)`
       if (newScrollY < this.minTranslateY) {
         zIndex = 1
         this.$refs.bgImage.style.paddingTop = 0

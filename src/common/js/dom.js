@@ -37,7 +37,7 @@ let vendor = (() => {
     ms: 'msTransform'
   }
 
-  // 若 div 元素有此 css 属性，则用此键名为开头
+  // 能力检测
   for (let key in transformNames) {
     if (elementStyle[transformNames[key]] !== undefined) {
       return key
