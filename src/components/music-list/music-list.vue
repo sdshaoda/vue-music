@@ -94,6 +94,7 @@ export default {
         index
       })
     },
+    // action 映射
     ...mapActions([
       'selectPlay'
     ])

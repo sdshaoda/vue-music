@@ -19,6 +19,7 @@ export default {
     }
   },
   computed: {
+    // getter 映射
     ...mapGetters([
       'singer'
     ]),

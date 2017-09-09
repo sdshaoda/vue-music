@@ -4,6 +4,7 @@ import * as types from './mutation-types'
 
 // 选择播放
 export const selectPlay = ({commit, state}, {list, index}) => {
+  // 点击播放时，提交多个 mutations
   commit(types.SET_SEQUENCE_LIST, list)
   commit(types.SET_PLAYLIST, list)
   commit(types.SET_CURRENT_INDEX, index)
