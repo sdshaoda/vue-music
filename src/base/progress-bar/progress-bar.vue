@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-bar" ref="progressBar">
+  <div class="progress-bar" ref="progressBar" @click="progressClick">
     <div class="bar-inner">
       <div class="progress" ref="progress"></div>
       <div class="progress-btn-wrapper" ref="progressBtn" @touchstart.prevent="progressTouchStart" @touchmove.prevent="progressTouchMove" @touchend="progressTouchEnd">
@@ -27,21 +27,29 @@ export default {
   },
   methods: {
     progressTouchStart(e) {
-      this.touch.initiated = true
+      // 设置拖动状态
+      this.touch.status = true
+      // 起始触摸点位置
       this.touch.startX = e.touches[0].pageX
+      // 进度条原始位置
       this.touch.left = this.$refs.progress.clientWidth
     },
     progressTouchMove(e) {
-      if (!this.touch.initiated) {
+      if (!this.touch.status) {
         return
       }
       const deltaX = e.touches[0].pageX - this.touch.startX
-      const offsetWidth = Math.min(Math.max(0, this.touch.left + deltaX), this.$refs.progressBar.clientWidth - progressBtnWidth)
+      // 进度条原始位置 + 拖动距离
+      const offsetWidth = Math.min(Math.max(this.touch.left + deltaX, 0), this.$refs.progressBar.clientWidth - progressBtnWidth)
       this._offset(offsetWidth)
     },
     progressTouchEnd() {
-      this.touch.initiated = false
+      this.touch.status = false
       // 完成拖动后 设置歌曲百分比
+      this._triggerPercent()
+    },
+    progressClick(e) {
+      this._offset(e.offsetX)
       this._triggerPercent()
     },
     _offset(offsetWidth) {
@@ -57,7 +65,7 @@ export default {
   },
   watch: {
     percent(newPercent) {
-      if (newPercent >= 0 && !this.touch.initiated) {
+      if (newPercent >= 0 && !this.touch.status) {
         const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
         const offsetWidth = newPercent * barWidth
         this._offset(offsetWidth)

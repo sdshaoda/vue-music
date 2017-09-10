@@ -218,6 +218,7 @@ export default {
       const second = this._pad(interval % 60)
       return `${minute}:${second}`
     },
+    // 改变播放进度
     percentChange(percent) {
       this.$refs.audio.currentTime = this.currentSong.duration * percent
       if (!this.playing) {
@@ -260,6 +261,7 @@ export default {
         this.$refs.audio.play()
       })
     },
+    // 根据 playing 切换 audio 的播放状态
     playing(newPlaying) {
       const audio = this.$refs.audio
       this.$nextTick(() => {
