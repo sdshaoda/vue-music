@@ -32,8 +32,8 @@
             <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
-            <div class="icon i-left">
-              <i class="icon-sequence"></i>
+            <div class="icon i-left" @click="changePlayMode">
+              <i :class="modeIcon"></i>
             </div>
             <div class="icon i-left" :class="disableClass">
               <i class="icon-prev" @click="prev"></i>
@@ -72,7 +72,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @canplay="canPlay" @error="error" @timeupdate="timeUpdate"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="canPlay" @error="error" @timeupdate="timeUpdate" @ended="ended"></audio>
   </div>
 </template>
 
@@ -83,6 +83,8 @@ import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
 import ProgressBar from 'base/progress-bar/progress-bar'
 import ProgressCircle from 'base/progress-circle/progress-circle'
+import { playMode } from 'common/js/config'
+import { shuffle } from 'common/js/util'
 
 const transform = prefixStyle('transform')
 
@@ -107,6 +109,9 @@ export default {
     miniIcon() {
       return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
     },
+    modeIcon() {
+      return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
+    },
     percent() {
       return this.currentTime / this.currentSong.duration
     },
@@ -115,7 +120,9 @@ export default {
       'playList',
       'currentSong',
       'playing',
-      'currentIndex'
+      'currentIndex',
+      'mode',
+      'sequenceList'
     ])
   },
   methods: {
@@ -207,6 +214,10 @@ export default {
       }
       this.songReady = false
     },
+    loop() {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+    },
     canPlay() {
       this.songReady = true
     },
@@ -216,6 +227,13 @@ export default {
     },
     timeUpdate(e) {
       this.currentTime = e.target.currentTime
+    },
+    ended() {
+      if (this.mode === playMode.loop) {
+        this.loop()
+      } else {
+        this.next()
+      }
     },
     format(interval) {
       interval = interval | 0
@@ -229,6 +247,28 @@ export default {
       if (!this.playing) {
         this.setPlayingState(true)
       }
+    },
+    changePlayMode() {
+      // mode 会在 0, 1, 2 之间循环
+      const mode = (this.mode + 1) % 3
+      this.setPlayMode(mode)
+      let list = null
+      if (mode === playMode.random) {
+        list = shuffle(this.sequenceList)
+      } else {
+        list = this.sequenceList
+      }
+      // 更换播放模式后，需重设当前歌曲的索引 index
+      this.resetCurrentIndex(list)
+      this.setPlayList(list)
+    },
+    resetCurrentIndex(list) {
+      // findIndex 是 ES6 中的语法
+      let index = list.findIndex((item) => {
+        // 当 return 为 true 时，返回索引 index
+        return item.id === this.currentSong.id
+      })
+      this.setCurrentIndex(index)
     },
     _pad(num, n = 2) {
       let len = num.toString().length
@@ -257,11 +297,16 @@ export default {
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
       setPlayingState: 'SET_PLAYING_STATE',
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayMode: 'SET_PLAY_MODE',
+      setPlayList: 'SET_PLAYLIST'
     })
   },
   watch: {
-    currentSong() {
+    currentSong(newCurrentSong, oldCurrentSong) {
+      if (newCurrentSong.id === oldCurrentSong.id) {
+        return
+      }
       this.$nextTick(() => {
         this.$refs.audio.play()
       })
