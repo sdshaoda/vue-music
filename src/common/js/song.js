@@ -1,6 +1,9 @@
+import { getLyric } from 'api/song'
+import { ERR_OK } from 'api/config'
+
 // 使用类来创建对象
 export default class Song {
-  constructor ({id, mid, singer, name, album, duration, image, url}) {
+  constructor({ id, mid, singer, name, album, duration, image, url }) {
     this.id = id
     this.mid = mid
     this.singer = singer
@@ -10,10 +13,18 @@ export default class Song {
     this.image = image
     this.url = url
   }
+
+  getLyric() {
+    getLyric(this.mid).then((res) => {
+      if (res.retcode === ERR_OK) {
+        this.lyric = res.lyric
+      }
+    })
+  }
 }
 
 // 工厂方法
-export function createSong (musicData) {
+export function createSong(musicData) {
   return new Song({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -27,7 +38,7 @@ export function createSong (musicData) {
 }
 
 // 原始的 singer 是一个数组，将其转换为以 '/' 相隔的字符串
-function filterSinger (singer) {
+function filterSinger(singer) {
   let ret = []
   if (!singer) {
     return ''

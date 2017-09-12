@@ -309,6 +309,7 @@ export default {
       }
       this.$nextTick(() => {
         this.$refs.audio.play()
+        this.currentSong.getLyric()
       })
     },
     // 根据 playing 切换 audio 的播放状态

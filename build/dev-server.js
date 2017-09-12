@@ -31,6 +31,7 @@ apiRoutes.get('/getDiscList', function (req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
 
   axios.get(url, {
+    // 伪装此 HTTP 请求是从QQ音乐来的
     headers: {
       referer: 'https://c.y.qq.com',
       host: 'c.y.qq.com'
@@ -38,6 +39,32 @@ apiRoutes.get('/getDiscList', function (req, res) {
     params: req.query
   }).then((response) => {
     res.json(response.data)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+apiRoutes.get('/lyric', function (req, res) {
+  var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+
+  axios.get(url, {
+    headers: {
+      referer: 'https://c.y.qq.com',
+      host: 'c.y.qq.com'
+    },
+    params: req.query
+  }).then((response) => {
+    var ret = response.data
+    // 返回的数据是 jsonp 字符串
+    if (typeof ret === 'string') {
+      // 正则表达式匹配 jsonp 中的 json 字符串
+      var reg = /^\w+\(({[^()]+})\)$/
+      var matches = ret.match(reg)
+      if (matches) {
+        ret = JSON.parse(matches[1])
+      }
+    }
+    res.json(ret)
   }).catch((e) => {
     console.log(e)
   })
