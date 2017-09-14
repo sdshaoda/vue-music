@@ -22,6 +22,13 @@
               </div>
             </div>
           </div>
+          <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
+            <div class="lyric-wrapper">
+              <div v-if="currentLyric">
+                <p class="text" :class="{'current': currentLineNum === index}" ref="lyricLine" v-for="(line, index) in currentLyric.lines" :key="index">{{line.txt}}</p>
+              </div>
+            </div>
+          </scroll>
         </div>
         <div class="bottom">
           <div class="progress-wrapper">
@@ -80,12 +87,13 @@
 import { mapGetters, mapMutations } from 'vuex'
 // GitHub: https://github.com/HenrikJoreteg/create-keyframe-animation
 import animations from 'create-keyframe-animation'
+import Scroll from 'base/scroll/scroll'
+import Lyric from 'lyric-parser'
 import { prefixStyle } from 'common/js/dom'
-import ProgressBar from 'base/progress-bar/progress-bar'
-import ProgressCircle from 'base/progress-circle/progress-circle'
 import { playMode } from 'common/js/config'
 import { shuffle } from 'common/js/util'
-import Lyric from 'lyric-parser'
+import ProgressBar from 'base/progress-bar/progress-bar'
+import ProgressCircle from 'base/progress-circle/progress-circle'
 
 const transform = prefixStyle('transform')
 
@@ -95,7 +103,8 @@ export default {
       songReady: false,
       currentTime: 0,
       radius: 32,
-      currentLyric: null
+      currentLyric: null,
+      currentLineNum: 0
     }
   },
   computed: {
@@ -274,8 +283,23 @@ export default {
     },
     getLyric() {
       this.currentSong.getLyric().then((lyric) => {
-        this.currentLyric = new Lyric(lyric)
+        // 调用第三方库 lyric-parser
+        this.currentLyric = new Lyric(lyric, this.handleLyric)
+        if (this.playing) {
+          // 歌词播放
+          this.currentLyric.play()
+        }
       })
+    },
+    handleLyric({ lineNum, txt }) {
+      this.currentLineNum = lineNum
+      if (lineNum > 5) {
+        let lineEle = this.$refs.lyricLine[lineNum - 5]
+        // 歌词滚动到对应位置
+        this.$refs.lyricList.scrollToElement(lineEle, 1000)
+      } else {
+        this.$refs.lyricList.scrollTo(0, 0, 1000)
+      }
     },
     _pad(num, n = 2) {
       let len = num.toString().length
@@ -329,7 +353,8 @@ export default {
   },
   components: {
     ProgressBar,
-    ProgressCircle
+    ProgressCircle,
+    Scroll
   }
 }
 </script>
