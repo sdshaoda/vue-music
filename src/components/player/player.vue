@@ -31,6 +31,11 @@
           </scroll>
         </div>
         <div class="bottom">
+          <!-- 封面/歌词 切换标记 -->
+          <div class="dot-wrapper">
+            <span class="dot" :class="{'active':currentShow === 'cd'}"></span>
+            <span class="dot" :class="{'active':currentShow === 'lyric'}"></span>
+          </div>
           <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
             <div class="progress-bar-wrapper">
@@ -104,7 +109,8 @@ export default {
       currentTime: 0,
       radius: 32,
       currentLyric: null,
-      currentLineNum: 0
+      currentLineNum: 0,
+      currentShow: 'cd'
     }
   },
   computed: {
