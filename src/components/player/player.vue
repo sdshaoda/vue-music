@@ -207,6 +207,10 @@ export default {
         return
       }
       this.setPlayingState(!this.playing)
+      if (this.currentLyric) {
+        // 暂停当前歌曲的播放
+        this.currentLyric.togglePlay()
+      }
     },
     next() {
       if (!this.songReady) {
@@ -240,6 +244,10 @@ export default {
     loop() {
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
+      if (this.currentLyric) {
+        // 歌词回到起点
+        this.currentLyric.seek(0)
+      }
     },
     canPlay() {
       this.songReady = true
@@ -266,9 +274,14 @@ export default {
     },
     // 改变播放进度
     percentChange(percent) {
-      this.$refs.audio.currentTime = this.currentSong.duration * percent
+      const currentTime = this.currentSong.duration * percent
+      this.$refs.audio.currentTime = currentTime
       if (!this.playing) {
         this.setPlayingState(true)
+      }
+      if (this.currentLyric) {
+        // 歌词跳转到相应位置
+        this.currentLyric.seek(currentTime * 1000)
       }
     },
     changePlayMode() {
@@ -407,6 +420,10 @@ export default {
     currentSong(newCurrentSong, oldCurrentSong) {
       if (newCurrentSong.id === oldCurrentSong.id) {
         return
+      }
+      if (this.currentLyric) {
+        // 清除当前歌词的播放
+        this.currentLyric.stop()
       }
       this.$nextTick(() => {
         this.$refs.audio.play()
