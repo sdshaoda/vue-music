@@ -31,6 +31,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { playListMixin } from 'common/js/mixin'
 import Scroll from 'base/scroll/scroll'
 import SongList from 'base/song-list/song-list'
 import Loading from 'base/loading/loading'
@@ -42,6 +43,8 @@ const transform = prefixStyle('transform')
 const backdropFilter = prefixStyle('backdrop-filter')
 
 export default {
+  // 使用 mixin
+  mixins: [playListMixin],
   props: {
     // 背景图
     bgImage: {
@@ -82,6 +85,13 @@ export default {
     this.$refs.list.$el.style.top = `${this.imageHeight}px`
   },
   methods: {
+    // 实现 mixin 中的方法
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      // 有mini播放器时 设置底部bottom
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
     scroll(pos) {
       this.scrollY = pos.y
     },

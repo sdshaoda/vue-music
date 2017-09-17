@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <scroll ref="scroll" class="recommend-content" :data="discList">
       <div>
         <!--在异步获取到recommends数据后，才渲染DOM-->
@@ -39,6 +39,7 @@
 
 
 <script type="text/ecmascript-6">
+import { playListMixin } from 'common/js/mixin'
 import Loading from 'base/loading/loading'
 import Slider from 'base/slider/slider'
 import Scroll from 'base/scroll/scroll'
@@ -46,6 +47,7 @@ import { getRecommend, getDiscList } from 'api/recommend'
 import { ERR_OK } from 'api/config'
 
 export default {
+  mixins: [playListMixin],
   data() {
     return {
       recommends: [],
@@ -57,6 +59,13 @@ export default {
     this._getDiscList()
   },
   methods: {
+    // 实现 mixin 中的方法
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      // 有mini播放器时 设置底部bottom
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     _getRecommend() {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {

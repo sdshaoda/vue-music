@@ -320,7 +320,6 @@ export default {
     },
     getLyric() {
       this.currentSong.getLyric().then((lyric) => {
-        console.log(lyric)
         // 调用第三方库 lyric-parser
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         if (this.playing) {

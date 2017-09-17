@@ -95,6 +95,10 @@ export default {
     scroll(pos) {
       this.scrollY = pos.y
     },
+    // 刷新 scroll
+    refresh() {
+      this.$refs.listview.refresh()
+    },
     _scrollTo(index) {
       if (!index && index !== 0) {
         return

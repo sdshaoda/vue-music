@@ -1,6 +1,6 @@
 <template>
-  <div class="singer">
-    <list-view :data="singers" @select="selectSinger"></list-view>
+  <div class="singer" ref="singer">
+    <list-view :data="singers" @select="selectSinger" ref="list"></list-view>
     <!-- 此处不可使用 keep-alive 组件缓存 -->
     <router-view></router-view>
   </div>
@@ -9,6 +9,7 @@
 <script type="text/ecmascript-6">
 import { getSingerList } from 'api/singer'
 import { ERR_OK } from 'api/config'
+import { playListMixin } from 'common/js/mixin'
 import Singer from 'common/js/singer'
 import ListView from 'base/listview/listview'
 import { mapMutations } from 'vuex'
@@ -17,6 +18,7 @@ const HOT_NAME = '热门'
 const HOT_SINGER_LEN = 10
 
 export default {
+  mixins: [playListMixin],
   data() {
     return {
       // 歌手列表数组
@@ -27,6 +29,13 @@ export default {
     this._getSingerList()
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      // 有mini播放器时 设置底部bottom
+      this.$refs.singer.style.bottom = bottom
+      // 调用子组件中的方法
+      this.$refs.list.refresh()
+    },
     selectSinger(singer) {
       // 手动 路由跳转
       this.$router.push({
