@@ -21,6 +21,9 @@
                 <img :src="currentSong.image" alt="" class="image">
               </div>
             </div>
+            <div class="playing-lyric-wrapper">
+              <div class="playing-lyric">{{playingLyric}}</div>
+            </div>
           </div>
           <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
@@ -112,7 +115,8 @@ export default {
       radius: 32,
       currentLyric: null,
       currentLineNum: 0,
-      currentShow: 'cd'
+      currentShow: 'cd',
+      playingLyric: ''
     }
   },
   computed: {
@@ -216,30 +220,38 @@ export default {
       if (!this.songReady) {
         return
       }
-      let index = this.currentIndex + 1
-      if (index === this.playList.length) {
-        index = 0
+      if (this.playList.length === 1) {
+        this.loop()
+      } else {
+        let index = this.currentIndex + 1
+        if (index === this.playList.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.setPlayingState(true)
+        }
+        this.songReady = false
       }
-      this.setCurrentIndex(index)
-      if (!this.playing) {
-        this.setPlayingState(true)
-      }
-      this.songReady = false
     },
     prev() {
       // 歌曲未准备好时切换到下一首会报错
       if (!this.songReady) {
         return
       }
-      let index = this.currentIndex - 1
-      if (index === -1) {
-        index = this.playList.length - 1
+      if (this.playList.length === 1) {
+        this.loop()
+      } else {
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playList.length - 1
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.setPlayingState(true)
+        }
+        this.songReady = false
       }
-      this.setCurrentIndex(index)
-      if (!this.playing) {
-        this.setPlayingState(true)
-      }
-      this.songReady = false
     },
     loop() {
       this.$refs.audio.currentTime = 0
@@ -308,12 +320,17 @@ export default {
     },
     getLyric() {
       this.currentSong.getLyric().then((lyric) => {
+        console.log(lyric)
         // 调用第三方库 lyric-parser
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         if (this.playing) {
           // 歌词播放
           this.currentLyric.play()
         }
+      }).catch(() => {
+        this.currentLyric = null
+        this.playingLyric = ''
+        this.currentLineNum = 0
       })
     },
     handleLyric({ lineNum, txt }) {
@@ -325,6 +342,7 @@ export default {
       } else {
         this.$refs.lyricList.scrollTo(0, 0, 1000)
       }
+      this.playingLyric = txt
     },
     middleTouchStart(e) {
       this.touch.status = true
@@ -425,10 +443,10 @@ export default {
         // 清除当前歌词的播放
         this.currentLyric.stop()
       }
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.$refs.audio.play()
         this.getLyric()
-      })
+      }, 1000)
     },
     // 根据 playing 切换 audio 的播放状态
     playing(newPlaying) {
