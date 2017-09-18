@@ -1,7 +1,7 @@
 <template>
   <div class="singer" ref="singer">
     <list-view :data="singers" @select="selectSinger" ref="list"></list-view>
-    <!-- 此处不可使用 keep-alive 组件缓存 -->
+    <!-- 歌手详情页 此处不可使用 keep-alive 组件缓存 -->
     <router-view></router-view>
   </div>
 </template>
