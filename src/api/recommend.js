@@ -3,7 +3,7 @@ import { commonParams, options } from './config'
 import axios from 'axios'
 
 // 获取 推荐
-export function getRecommend () {
+export function getRecommend() {
   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
 
   // Object.assign() 用于对象的合并
@@ -18,7 +18,7 @@ export function getRecommend () {
 }
 
 // 获取 歌单列表
-export function getDiscList () {
+export function getDiscList() {
   const url = '/api/getDiscList'
 
   const data = Object.assign({}, commonParams, {
@@ -38,4 +38,22 @@ export function getDiscList () {
   }).then((res) => {
     return Promise.resolve(res.data)
   })
+}
+
+// 获取歌单歌曲
+export function getSongList(disstid) {
+  const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+
+  const data = Object.assign({}, commonParams, {
+    disstid,
+    type: 1,
+    json: 1,
+    utf8: 1,
+    onlysong: 0,
+    platform: 'yqq',
+    hostUin: 0,
+    needNewCode: 0
+  })
+
+  return jsonp(url, data, options)
 }

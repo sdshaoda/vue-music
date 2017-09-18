@@ -72,7 +72,7 @@ export default {
     // 点击歌单 跳转到歌单详情页
     selectItem(item, index) {
       this.$router.push({
-        path: `recommend/${item.dissid}`
+        path: `/recommend/${item.dissid}`
       })
       this.setDisc(item)
     },

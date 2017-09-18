@@ -8,7 +8,8 @@ export const commonParams = {
 }
 
 export const options = {
-  param: 'jsonpCallback'
+  param: 'jsonpCallback',
+  prefix: 'jp'
 }
 
 // 返回'成功'，语义化，便于维护
