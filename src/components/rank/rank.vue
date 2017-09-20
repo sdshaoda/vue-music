@@ -2,7 +2,7 @@
   <div class="rank" ref="rank">
     <scroll class="toplist" :data="topList" ref="topList">
       <ul>
-        <li class="item" v-for="(item, index) in topList" :key="index">
+        <li class="item" v-for="(item, index) in topList" :key="index" @click="selectItem(item)">
           <div class="icon">
             <img v-lazy="item.picUrl" alt="" width="100" height="100">
           </div>
@@ -28,6 +28,7 @@ import { getTopList } from 'api/rank'
 import { ERR_OK } from 'api/config'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
+import { mapMutations } from 'vuex'
 
 export default {
   mixins: [playListMixin],
@@ -46,13 +47,21 @@ export default {
       // 改变了DOM样式 需刷新 Scroll 重新计算
       this.$refs.topList.refresh()
     },
+    selectItem(item) {
+      this.$router.push(`/rank/${item.id}`)
+      // 将排行榜项写入 vuex state 中
+      this.setTopList(item)
+    },
     _getTopList() {
       getTopList().then((res) => {
         if (res.code === ERR_OK) {
           this.topList = res.data.topList
         }
       })
-    }
+    },
+    ...mapMutations({
+      setTopList: 'SET_TOP_LIST'
+    })
   },
   components: {
     Scroll,
