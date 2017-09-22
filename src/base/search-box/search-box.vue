@@ -17,6 +17,7 @@ export default {
   },
   data() {
     return {
+      // 使用了v-model 双向数据绑定，数据与视图可以自动同步
       query: ''
     }
   },
@@ -26,8 +27,13 @@ export default {
     })
   },
   methods: {
-    clear() {
+    // 清楚搜索词
+    clearQuery() {
       this.query = ''
+    },
+    // 设置搜索词
+    setQuery(query) {
+      this.query = query
     }
   }
 }
