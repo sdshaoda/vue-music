@@ -49,7 +49,7 @@ export function createSong(musicData) {
 }
 
 // 原始的 singer 是一个数组，将其转换为以 '/' 相隔的字符串
-function filterSinger(singer) {
+export function filterSinger(singer) {
   let ret = []
   if (!singer) {
     return ''
