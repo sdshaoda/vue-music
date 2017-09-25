@@ -27,6 +27,11 @@ export default {
     listenScroll: {
       type: Boolean,
       default: false
+    },
+    // 上拉刷新，默认不开启
+    pullup: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -52,6 +57,16 @@ export default {
         this.scroll.on('scroll', (pos) => {
           // this 为 better-scroll 的实例
           _this.$emit('scroll', pos)
+        })
+      }
+
+      if (this.pullup) {
+        // 滚动结束事件
+        this.scroll.on('scrollEnd', () => {
+          if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+            // 快滚动到底部时
+            this.$emit('scrollToEnd')
+          }
         })
       }
     },
