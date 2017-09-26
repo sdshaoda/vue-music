@@ -21,6 +21,8 @@
     <div class="search-result" v-show="query">
       <suggest :query="query"></suggest>
     </div>
+    <!-- 歌手详情页 二级路由 -->
+    <router-view></router-view>
   </div>
 </template>
 

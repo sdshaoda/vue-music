@@ -1,7 +1,7 @@
 <template>
   <scroll class="suggest" :data="result" :pullup="pullup" @scrollToEnd="searchMore" ref="suggest">
     <ul class="suggest-list">
-      <li class="suggest-item" v-for="(item, index) in result" :key="index">
+      <li class="suggest-item" v-for="(item, index) in result" :key="index" @click="selectItem(item)">
         <div class="icon">
           <i :class="getIconClass(item)"></i>
         </div>
@@ -18,8 +18,10 @@
 import { search } from 'api/search'
 import { ERR_OK } from 'api/config'
 import { createSong } from 'common/js/song'
+import Singer from 'common/js/singer'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
+import { mapMutations } from 'vuex'
 
 const TYPE_SINGER = 'singer'
 const PER_PAGE = 20
@@ -85,6 +87,20 @@ export default {
         return `${item.name} - ${item.singer}`
       }
     },
+    selectItem(item) {
+      // 点击歌手
+      if (item.type === TYPE_SINGER) {
+        // 生成歌手数据格式
+        const singer = new Singer({
+          id: item.singermid,
+          name: item.singername
+        })
+        // 跳转到歌手详情页 二级路由
+        this.$router.push(`/search/${singer.id}`)
+        // 更改state
+        this.setSinger(singer)
+      }
+    },
     // 检查是否有更多的结果供搜索
     _checkMore(data) {
       const song = data.song
@@ -116,7 +132,10 @@ export default {
         }
       })
       return ret
-    }
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    })
   },
   watch: {
     query(newQuery) {
