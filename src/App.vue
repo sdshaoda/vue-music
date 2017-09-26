@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <!-- 顶部标识 -->
     <m-header></m-header>
+    <!-- 路由tab -->
     <tab></tab>
     <!--组件缓存-->
     <keep-alive>

@@ -60,11 +60,12 @@ export default {
         })
       }
 
+      // 需要上拉刷新时
       if (this.pullup) {
         // 滚动结束事件
         this.scroll.on('scrollEnd', () => {
           if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
-            // 快滚动到底部时
+            // 快滚动到底部时发出事件，基础组件不参与具体业务逻辑
             this.$emit('scrollToEnd')
           }
         })

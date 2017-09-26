@@ -16,6 +16,7 @@ export default class Song {
   }
 
   getLyric() {
+    // 当前歌曲存在时，返回成功时的回调函数
     if (this.lyric) {
       return Promise.resolve(this.lyric)
     }
@@ -34,7 +35,7 @@ export default class Song {
   }
 }
 
-// 工厂方法
+// 工厂方法 将原始歌曲数据转换为期望的数据格式
 export function createSong(musicData) {
   return new Song({
     id: musicData.songid,

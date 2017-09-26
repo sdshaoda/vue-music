@@ -61,6 +61,7 @@ export default {
         return
       }
       this.page++
+      // 本来想复用this.search()函数的，但是第一次搜索的逻辑特殊，只好分开写了
       search(this.query, this.page, this.showSinger, PER_PAGE).then((res) => {
         if (res.code === ERR_OK) {
           this.result = this.result.concat(this._getResult(res.data))
@@ -68,6 +69,7 @@ export default {
         }
       })
     },
+    // 搜索结果icon
     getIconClass(item) {
       if (item.type === TYPE_SINGER) {
         return 'icon-mine'
@@ -75,6 +77,7 @@ export default {
         return 'icon-music'
       }
     },
+    // 搜索显示名
     getDisplayName(item) {
       if (item.type === TYPE_SINGER) {
         return item.singername
@@ -82,6 +85,7 @@ export default {
         return `${item.name} - ${item.singer}`
       }
     },
+    // 检查是否有更多的结果供搜索
     _checkMore(data) {
       const song = data.song
       if (!song.list.length || (song.curnum + song.curpage * PER_PAGE) >= song.totalnum) {
@@ -93,6 +97,7 @@ export default {
 
       // 搜索结果中有歌手时
       if (data.zhida && data.zhida.singerid) {
+        // ...扩展运算符把对象一个个键值对分别拆开，{ }对象运算符再把键值对都组合起来
         ret.push({ ...data.zhida, ...{ type: TYPE_SINGER } })
       }
 
@@ -102,6 +107,7 @@ export default {
 
       return ret
     },
+    // 歌曲数据格式化
     _normalizeSongs(list) {
       let ret = []
       list.forEach((musicData) => {
