@@ -21,7 +21,7 @@ import { createSong } from 'common/js/song'
 import Singer from 'common/js/singer'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 const TYPE_SINGER = 'singer'
 const PER_PAGE = 20
@@ -99,6 +99,9 @@ export default {
         this.$router.push(`/search/${singer.id}`)
         // 更改state
         this.setSinger(singer)
+      } else {
+        // 点击歌曲，插入到播放列表中
+        this.insertSong(item)
       }
     },
     // 检查是否有更多的结果供搜索
@@ -135,7 +138,10 @@ export default {
     },
     ...mapMutations({
       setSinger: 'SET_SINGER'
-    })
+    }),
+    ...mapActions([
+      'insertSong'
+    ])
   },
   watch: {
     query(newQuery) {
