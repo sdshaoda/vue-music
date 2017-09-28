@@ -32,6 +32,10 @@ export default {
     pullup: {
       type: Boolean,
       default: false
+    },
+    beforeScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -68,6 +72,13 @@ export default {
             // 快滚动到底部时发出事件，基础组件不参与具体业务逻辑
             this.$emit('scrollToEnd')
           }
+        })
+      }
+
+      // 开始滚动前时进行一些处理
+      if (this.beforeScroll) {
+        this.scroll.on('beforeScrollStart', () => {
+          this.$emit('beforeScroll')
         })
       }
     },

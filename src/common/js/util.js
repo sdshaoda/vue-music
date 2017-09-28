@@ -15,3 +15,16 @@ export function shuffle(arr) {
   }
   return newArr
 }
+
+// 函数反复调用时截流 柯里化
+export function debounce(func, delay) {
+  let timer
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
+  }
+}

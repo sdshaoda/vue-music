@@ -19,7 +19,7 @@
     </div>
     <!-- 搜索结果 -->
     <div class="search-result" v-show="query">
-      <suggest :query="query"></suggest>
+      <suggest :query="query" @beforeScroll="blurInput"></suggest>
     </div>
     <!-- 歌手详情页 二级路由 -->
     <router-view></router-view>
@@ -51,6 +51,9 @@ export default {
     // search-box 中搜索词改变
     queryChange(newQuery) {
       this.query = newQuery
+    },
+    blurInput() {
+      this.$refs.searchBox.blurQuery()
     },
     // 获取热门搜索词
     _getHotKeys() {

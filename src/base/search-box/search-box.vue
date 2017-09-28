@@ -2,12 +2,14 @@
   <!-- 搜索框 -->
   <div class="search-box">
     <i class="icon-search"></i>
-    <input type="text" class="box" :placeholder="placeholder" v-model="query">
+    <input ref="query" type="text" class="box" :placeholder="placeholder" v-model="query">
     <i class="icon-dismiss" v-show="query" @click="clearQuery"></i>
   </div>
 </template>
 
 <script>
+import { debounce } from 'common/js/util'
+
 export default {
   props: {
     placeholder: {
@@ -22,9 +24,9 @@ export default {
     }
   },
   created() {
-    this.$watch('query', (newQuery) => {
+    this.$watch('query', debounce((newQuery) => {
       this.$emit('query', newQuery)
-    })
+    }, 200))
   },
   methods: {
     // 清楚搜索词
@@ -34,6 +36,10 @@ export default {
     // 设置搜索词
     setQuery(query) {
       this.query = query
+    },
+    blurQuery() {
+      this.$refs.query.blur()
+      console.log('blur')
     }
   }
 }
