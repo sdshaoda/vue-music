@@ -19,7 +19,7 @@
     </div>
     <!-- 搜索结果 -->
     <div class="search-result" v-show="query">
-      <suggest :query="query" @beforeScroll="blurInput"></suggest>
+      <suggest :query="query" @blurInput="blurInput"></suggest>
     </div>
     <!-- 歌手详情页 二级路由 -->
     <router-view></router-view>

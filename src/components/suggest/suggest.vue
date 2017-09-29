@@ -1,5 +1,5 @@
 <template>
-  <scroll class="suggest" :data="result" :pullup="pullup" :beforeScroll="beforeScroll" @scrollToEnd="searchMore" @beforeScroll="beforeScroll" ref="suggest">
+  <scroll class="suggest" :data="result" :pullup="pullup" :beforeScroll="beforeScroll" @scrollToEnd="searchMore" @beforeScroll="blurInput" ref="suggest">
     <ul class="suggest-list">
       <li class="suggest-item" v-for="(item, index) in result" :key="index" @click="selectItem(item)">
         <div class="icon">
@@ -109,8 +109,8 @@ export default {
         this.insertSong(item)
       }
     },
-    beforeScroll() {
-      this.$emit('beforeScroll')
+    blurInput() {
+      this.$emit('blurInput')
     },
     // 检查是否有更多的结果供搜索
     _checkMore(data) {

@@ -39,7 +39,6 @@ export default {
     },
     blurQuery() {
       this.$refs.query.blur()
-      console.log('blur')
     }
   }
 }
