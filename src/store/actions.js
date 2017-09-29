@@ -89,3 +89,8 @@ export const insertSong = ({ commit, state }, song) => {
   commit(types.SET_FULL_SCREEN, true)
   commit(types.SET_PLAYING_STATE, true)
 }
+
+// 保存搜索历史
+export const saveSearchHistory = function ({ commit }, query) {
+  // TODO
+}

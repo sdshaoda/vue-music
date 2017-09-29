@@ -19,7 +19,7 @@
     </div>
     <!-- 搜索结果 -->
     <div class="search-result" v-show="query">
-      <suggest :query="query" @blurInput="blurInput"></suggest>
+      <suggest :query="query" @blurInput="blurInput" @select="saveSearch"></suggest>
     </div>
     <!-- 歌手详情页 二级路由 -->
     <router-view></router-view>
@@ -54,6 +54,10 @@ export default {
     },
     blurInput() {
       this.$refs.searchBox.blurQuery()
+    },
+    //  保存搜索结果
+    saveSearch() {
+      // TODO
     },
     // 获取热门搜索词
     _getHotKeys() {

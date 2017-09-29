@@ -108,6 +108,9 @@ export default {
         // 点击歌曲，插入到播放列表中
         this.insertSong(item)
       }
+
+      // 点击处理 保存搜索历史
+      this.$emit('select')
     },
     blurInput() {
       this.$emit('blurInput')
