@@ -31,6 +31,7 @@ import SearchBox from 'base/search-box/search-box'
 import Suggest from 'components/suggest/suggest'
 import { getHotKeys } from 'api/search'
 import { ERR_OK } from 'api/config'
+import { mapActions } from 'vuex'
 
 export default {
   data() {
@@ -57,7 +58,7 @@ export default {
     },
     //  保存搜索结果
     saveSearch() {
-      // TODO
+      this.saveSearchHistory(this.query)
     },
     // 获取热门搜索词
     _getHotKeys() {
@@ -67,7 +68,10 @@ export default {
           this.hotKeys = res.data.hotkey.slice(0, 10)
         }
       })
-    }
+    },
+    ...mapActions([
+      'saveSearchHistory'
+    ])
   },
   components: {
     SearchBox,

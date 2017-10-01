@@ -1,6 +1,7 @@
 import * as types from './mutation-types'
 import { playMode } from 'common/js/config'
 import { shuffle } from 'common/js/util'
+import { saveSearch } from 'common/js/cache'
 
 // action 中通常是 异步操作 或 对mutation的封装
 
@@ -92,5 +93,5 @@ export const insertSong = ({ commit, state }, song) => {
 
 // 保存搜索历史
 export const saveSearchHistory = function ({ commit }, query) {
-  // TODO
+  commit(types.SET_SEARCH_HISTORY, saveSearch(query))
 }
