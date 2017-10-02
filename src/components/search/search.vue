@@ -19,17 +19,17 @@
         <div class="search-history" v-show="searchHistory.length">
           <h1 class="title">
             <span class="text">搜索历史</span>
-            <span class="clear">
+            <span class="clear" @click="clearSearchHistory">
               <i class="icon-clear"></i>
             </span>
           </h1>
-          <search-list :searches="searchHistory"></search-list>
+          <search-list :searches="searchHistory" @select="hotKeyQuery" @deleteOne="deleteSearchHistory"></search-list>
         </div>
       </div>
     </div>
     <!-- 搜索结果 -->
     <div class="search-result" v-show="query">
-      <suggest :query="query" @blurInput="blurInput" @select="saveSearch"></suggest>
+      <suggest :query="query" @blurInput="blurInput" @select="saveSearchHistory(query)"></suggest>
     </div>
     <!-- 歌手详情页 二级路由 -->
     <router-view></router-view>
@@ -72,10 +72,6 @@ export default {
     blurInput() {
       this.$refs.searchBox.blurQuery()
     },
-    //  保存搜索结果
-    saveSearch() {
-      this.saveSearchHistory(this.query)
-    },
     // 获取热门搜索词
     _getHotKeys() {
       getHotKeys().then((res) => {
@@ -86,7 +82,9 @@ export default {
       })
     },
     ...mapActions([
-      'saveSearchHistory'
+      'saveSearchHistory',
+      'deleteSearchHistory',
+      'clearSearchHistory'
     ])
   },
   components: {
