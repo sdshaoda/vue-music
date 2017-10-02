@@ -4,9 +4,9 @@
     <div class="search-box-wrapper">
       <search-box ref="searchBox" @query="queryChange"></search-box>
     </div>
-    <!-- 热搜词 -->
     <div class="shortcut-wrapper" v-show="!query">
       <div class="shortcut">
+        <!-- 热搜词 -->
         <div class="hot-key">
           <h1 class="title">热门搜索</h1>
           <ul>
@@ -14,6 +14,16 @@
               <span>{{item.k}}</span>
             </li>
           </ul>
+        </div>
+        <!-- 搜索历史 -->
+        <div class="search-history" v-show="searchHistory.length">
+          <h1 class="title">
+            <span class="text">搜索历史</span>
+            <span class="clear">
+              <i class="icon-clear"></i>
+            </span>
+          </h1>
+          <search-list :searches="searchHistory"></search-list>
         </div>
       </div>
     </div>
@@ -28,10 +38,11 @@
 
 <script type="text/ecmascript-6">
 import SearchBox from 'base/search-box/search-box'
+import SearchList from 'base/search-list/search-list'
 import Suggest from 'components/suggest/suggest'
 import { getHotKeys } from 'api/search'
 import { ERR_OK } from 'api/config'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -39,6 +50,11 @@ export default {
       hotKeys: [],
       query: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'searchHistory'
+    ])
   },
   created() {
     // 页面初始时获取热门搜索词
@@ -75,6 +91,7 @@ export default {
   },
   components: {
     SearchBox,
+    SearchList,
     Suggest
   }
 }
