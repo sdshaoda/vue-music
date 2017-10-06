@@ -19,7 +19,7 @@
         <div class="search-history" v-show="searchHistory.length">
           <h1 class="title">
             <span class="text">搜索历史</span>
-            <span class="clear" @click="clearSearchHistory">
+            <span class="clear" @click="showConfirm">
               <i class="icon-clear"></i>
             </span>
           </h1>
@@ -31,6 +31,7 @@
     <div class="search-result" v-show="query">
       <suggest :query="query" @blurInput="blurInput" @select="saveSearchHistory(query)"></suggest>
     </div>
+    <confirm ref="confirm" title="清空所有搜索历史" confirmText="清空" @confirm="clearSearchHistory"></confirm>
     <!-- 歌手详情页 二级路由 -->
     <router-view></router-view>
   </div>
@@ -39,6 +40,7 @@
 <script type="text/ecmascript-6">
 import SearchBox from 'base/search-box/search-box'
 import SearchList from 'base/search-list/search-list'
+import Confirm from 'base/confirm/confirm'
 import Suggest from 'components/suggest/suggest'
 import { getHotKeys } from 'api/search'
 import { ERR_OK } from 'api/config'
@@ -72,6 +74,9 @@ export default {
     blurInput() {
       this.$refs.searchBox.blurQuery()
     },
+    showConfirm() {
+      this.$refs.confirm.show()
+    },
     // 获取热门搜索词
     _getHotKeys() {
       getHotKeys().then((res) => {
@@ -90,6 +95,7 @@ export default {
   components: {
     SearchBox,
     SearchList,
+    Confirm,
     Suggest
   }
 }
