@@ -115,6 +115,9 @@ export default {
     blurInput() {
       this.$emit('blurInput')
     },
+    refresh() {
+      this.$refs.suggest.refresh()
+    },
     // 检查是否有更多的结果供搜索
     _checkMore(data) {
       const song = data.song

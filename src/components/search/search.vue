@@ -4,7 +4,7 @@
     <div class="search-box-wrapper">
       <search-box ref="searchBox" @query="queryChange"></search-box>
     </div>
-    <div class="shortcut-wrapper" v-show="!query">
+    <div class="shortcut-wrapper" ref="shorcutWrapper" v-show="!query">
       <scroll class="shortcut" ref="shortcut" :data="shortcut">
         <div>
           <!-- 热搜词 -->
@@ -30,8 +30,8 @@
       </scroll>
     </div>
     <!-- 搜索结果 -->
-    <div class="search-result" v-show="query">
-      <suggest :query="query" @blurInput="blurInput" @select="saveSearchHistory(query)"></suggest>
+    <div class="search-result" ref="searchResult" v-show="query">
+      <suggest ref="suggest" :query="query" @blurInput="blurInput" @select="saveSearchHistory(query)"></suggest>
     </div>
     <confirm ref="confirm" title="清空所有搜索历史" confirmText="清空" @confirm="clearSearchHistory"></confirm>
     <!-- 歌手详情页 二级路由 -->
@@ -40,6 +40,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { playListMixin } from 'common/js/mixin'
 import SearchBox from 'base/search-box/search-box'
 import SearchList from 'base/search-list/search-list'
 import Confirm from 'base/confirm/confirm'
@@ -50,6 +51,7 @@ import { ERR_OK } from 'api/config'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  mixins: [playListMixin],
   data() {
     return {
       hotKeys: [],
@@ -69,6 +71,15 @@ export default {
     this._getHotKeys()
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length ? '60px' : ''
+      // 需要同时更改 搜索历史 和 搜索结果
+      this.$refs.shorcutWrapper.style.bottom = bottom
+      this.$refs.searchResult.style.bottom = bottom
+      // 改变了DOM样式 需刷新 Scroll 重新计算
+      this.$refs.shortcut.refresh()
+      this.$refs.suggest.refresh()
+    },
     // 搜索热门词
     hotKeyQuery(query) {
       this.$refs.searchBox.setQuery(query)
