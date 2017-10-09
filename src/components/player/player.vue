@@ -87,6 +87,7 @@
         </div>
       </div>
     </transition>
+    <playlist></playlist>
     <audio ref="audio" :src="currentSong.url" @canplay="canPlay" @error="error" @timeupdate="timeUpdate" @ended="ended"></audio>
   </div>
 </template>
@@ -102,6 +103,7 @@ import { playMode } from 'common/js/config'
 import { shuffle } from 'common/js/util'
 import ProgressBar from 'base/progress-bar/progress-bar'
 import ProgressCircle from 'base/progress-circle/progress-circle'
+import Playlist from 'components/playlist/playlist'
 
 const transform = prefixStyle('transform')
 // CSS属性变化的过渡时间
@@ -458,7 +460,8 @@ export default {
   components: {
     ProgressBar,
     ProgressCircle,
-    Scroll
+    Scroll,
+    Playlist
   }
 }
 </script>
