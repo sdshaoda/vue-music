@@ -82,12 +82,12 @@
             <i class="icon-mini" :class="miniIcon" @click.stop="togglePlaying"></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click="showPlaylist">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
-    <playlist></playlist>
+    <playlist ref="playlist"></playlist>
     <audio ref="audio" :src="currentSong.url" @canplay="canPlay" @error="error" @timeupdate="timeUpdate" @ended="ended"></audio>
   </div>
 </template>
@@ -402,6 +402,9 @@ export default {
       this.$refs.middleL.style.opacity = opacity
       this.$refs.middleL.style[transitionDuration] = '300ms'
       this.touch.status = false
+    },
+    showPlaylist() {
+      this.$refs.playlist.show()
     },
     _pad(num, n = 2) {
       let len = num.toString().length
