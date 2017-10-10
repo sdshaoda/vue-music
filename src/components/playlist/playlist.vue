@@ -11,7 +11,7 @@
         </div>
         <scroll class="list-content" ref="listContent" :data="sequenceList">
           <ul>
-            <li class="item" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
+            <li class="item" ref="listItem" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{item.name}}</span>
               <span class="like">
@@ -62,6 +62,7 @@ export default {
       // 刷新scroll
       setTimeout(() => {
         this.$refs.listContent.refresh()
+        this.scrollToSong(this.currentSong)
       }, 20)
     },
     hide() {
@@ -82,9 +83,18 @@ export default {
         })
       }
       this.setCurrentIndex(index)
+      this.setPlayingState(true)
+      this.scrollToSong(song)
+    },
+    scrollToSong(song) {
+      const index = this.sequenceList.findIndex((item) => {
+        return song.id === item.id
+      })
+      this.$refs.listContent.scrollToElement(this.$refs.listItem[index], 300)
     },
     ...mapMutations({
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayingState: 'SET_PLAYING_STATE'
     })
   },
   components: {
