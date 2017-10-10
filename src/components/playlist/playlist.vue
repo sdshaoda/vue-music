@@ -9,11 +9,11 @@
             <span class="clear"></span>
           </h1>
         </div>
-        <div class="list-content">
+        <scroll class="list-content" ref="listContent" :data="sequenceList">
           <ul>
-            <li class="item">
-              <i class="current"></i>
-              <span class="text"></span>
+            <li class="item" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
+              <i class="current" :class="getCurrentIcon(item)"></i>
+              <span class="text">{{item.name}}</span>
               <span class="like">
                 <i class="icon-not-favorite"></i>
               </span>
@@ -22,7 +22,7 @@
               </span>
             </li>
           </ul>
-        </div>
+        </scroll>
         <div class="list-operate">
           <div class="add">
             <i class="icon-add"></i>
@@ -38,19 +38,57 @@
 </template>
 
 <script>
+import { playMode } from 'common/js/config'
+import Scroll from 'base/scroll/scroll'
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
   data() {
     return {
       showFlag: false
     }
   },
+  computed: {
+    ...mapGetters([
+      'sequenceList',
+      'playList',
+      'currentSong',
+      'mode'
+    ])
+  },
   methods: {
     show() {
       this.showFlag = true
+      // 刷新scroll
+      setTimeout(() => {
+        this.$refs.listContent.refresh()
+      }, 20)
     },
     hide() {
       this.showFlag = false
-    }
+    },
+    // 设置当前播放icon
+    getCurrentIcon(song) {
+      if (song.id === this.currentSong.id) {
+        return 'icon-play'
+      }
+      return ''
+    },
+    selectItem(song, index) {
+      // 随机播放时，先获取索引index
+      if (this.mode === playMode.random) {
+        index = this.playList.findIndex((item) => {
+          return song.id === item.id
+        })
+      }
+      this.setCurrentIndex(index)
+    },
+    ...mapMutations({
+      setCurrentIndex: 'SET_CURRENT_INDEX'
+    })
+  },
+  components: {
+    Scroll
   }
 }
 </script>
