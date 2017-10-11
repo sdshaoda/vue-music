@@ -440,6 +440,9 @@ export default {
   },
   watch: {
     currentSong(newCurrentSong, oldCurrentSong) {
+      if (!newCurrentSong.id) {
+        return
+      }
       if (newCurrentSong.id === oldCurrentSong.id) {
         return
       }
