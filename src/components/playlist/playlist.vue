@@ -4,7 +4,7 @@
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
-            <i class="icon"></i>
+            <i class="icon" :class="modeIcon"></i>
             <span class="text"></span>
             <span class="clear" @click="showConfirm">
               <i class="icon-clear"></i>
@@ -41,12 +41,14 @@
 </template>
 
 <script>
+import { playerMixin } from 'common/js/mixin.js'
 import { playMode } from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
 import Confirm from 'base/confirm/confirm'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
+  mixins: ['playMixin'],
   data() {
     return {
       showFlag: false
