@@ -26,7 +26,7 @@
           </transition-group>
         </scroll>
         <div class="list-operate">
-          <div class="add">
+          <div class="add" @click="showAddSong">
             <i class="icon-add"></i>
             <span class="text">添加歌曲到队列</span>
           </div>
@@ -36,6 +36,7 @@
         </div>
       </div>
       <confirm ref="confirm" title="清空播放列表？" confirmText="清空" @confirm="clearPlayList"></confirm>
+      <add-song ref="addSong"></add-song>
     </div>
   </transition>
 </template>
@@ -45,6 +46,7 @@ import { playModeMixin } from 'common/js/mixin.js'
 import { playMode } from 'common/js/config'
 import Scroll from 'base/scroll/scroll'
 import Confirm from 'base/confirm/confirm'
+import AddSong from 'components/add-song/add-song'
 import { mapActions } from 'vuex'
 
 export default {
@@ -104,6 +106,9 @@ export default {
     showConfirm() {
       this.$refs.confirm.show()
     },
+    showAddSong() {
+      this.$refs.addSong.show()
+    },
     ...mapActions([
       'deleteSong',
       'clearPlayList'
@@ -111,7 +116,8 @@ export default {
   },
   components: {
     Scroll,
-    Confirm
+    Confirm,
+    AddSong
   }
 }
 </script>

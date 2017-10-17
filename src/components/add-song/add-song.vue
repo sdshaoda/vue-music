@@ -1,9 +1,9 @@
 <template>
   <transition name="slide">
-    <div class="add-song">
+    <div class="add-song" v-show="showFlag" @click.stop>
       <div class="header">
         <div class="title"></div>
-        <div class="close">
+        <div class="close" @click.stop="hide">
           <div class="icon-close"></div>
         </div>
       </div>
@@ -16,7 +16,19 @@
 
 <script>
 export default {
-  
+  data() {
+    return {
+      showFlag: false
+    }
+  },
+  methods: {
+    show() {
+      this.showFlag = true
+    },
+    hide() {
+      this.showFlag = false
+    }
+  }
 }
 </script>
 
