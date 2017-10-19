@@ -7,18 +7,26 @@
           <div class="icon-close"></div>
         </div>
       </div>
-      <div class="search-box-wrapper"></div>
-      <div class="shortcut"></div>
-      <div class="search-result"></div>
+      <div class="search-box-wrapper">
+        <search-box placeholder="搜索歌曲" @query="search"></search-box>
+      </div>
+      <div class="shortcut" v-show="!query"></div>
+      <div class="search-result" v-show="query">
+        <suggest :query="query" showSinger="showSinger" @select="selectSuggest"></suggest>
+      </div>
     </div>
   </transition>
 </template>
 
 <script>
+import SearchBox from 'base/search-box/search-box'
+import Suggest from 'components/suggest/suggest'
+
 export default {
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      showSinger: false
     }
   },
   methods: {
@@ -27,7 +35,17 @@ export default {
     },
     hide() {
       this.showFlag = false
+    },
+    search(query) {
+      this.query = query
+    },
+    selectSuggest() {
+
     }
+  },
+  components: {
+    SearchBox,
+    Suggest
   }
 }
 </script>

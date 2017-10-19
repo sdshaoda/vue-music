@@ -1,7 +1,8 @@
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { playMode } from 'common/js/config'
 import { shuffle } from 'common/js/util'
 
+// 播放列表
 export const playListMixin = {
   computed: {
     ...mapGetters([
@@ -27,6 +28,7 @@ export const playListMixin = {
   }
 }
 
+// 播放模式
 export const playModeMixin = {
   computed: {
     modeIcon() {
@@ -68,5 +70,35 @@ export const playModeMixin = {
       setPlayMode: 'SET_PLAY_MODE',
       setPlayList: 'SET_PLAYLIST'
     })
+  }
+}
+
+// 搜索
+export const searchMixin = {
+  data() {
+    return {
+      query: ''
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'searchHistory'
+    ])
+  },
+  methods: {
+    blurInput() {
+      this.$refs.searchBox.blurQuery()
+    },
+    showConfirm() {
+      this.$refs.confirm.show()
+    },
+    // 搜索词改变
+    queryChange(newQuery) {
+      this.query = newQuery
+    },
+    ...mapActions([
+      'saveSearchHistory',
+      'deleteSearchHistory'
+    ])
   }
 }
