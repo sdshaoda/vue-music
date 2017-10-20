@@ -10,7 +10,9 @@
       <div class="search-box-wrapper">
         <search-box placeholder="搜索歌曲" @query="search"></search-box>
       </div>
-      <div class="shortcut" v-show="!query"></div>
+      <div class="shortcut" v-show="!query">
+        <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
+      </div>
       <div class="search-result" v-show="query">
         <suggest :query="query" showSinger="showSinger" @select="selectSuggest"></suggest>
       </div>
@@ -21,12 +23,19 @@
 <script>
 import SearchBox from 'base/search-box/search-box'
 import Suggest from 'components/suggest/suggest'
+import Switches from 'base/switches/switches'
 
 export default {
   data() {
     return {
       showFlag: false,
-      showSinger: false
+      showSinger: false,
+      currentIndex: 0,
+      switches: [
+        {name: '最近播放'},
+        {name: '搜索历史'}
+      ],
+      query: ''
     }
   },
   methods: {
@@ -40,12 +49,16 @@ export default {
       this.query = query
     },
     selectSuggest() {
-
+      this.saveSearch()
+    },
+    switchItem(index) {
+      this.currentIndex = index
     }
   },
   components: {
     SearchBox,
-    Suggest
+    Suggest,
+    Switches
   }
 }
 </script>
