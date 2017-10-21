@@ -135,3 +135,8 @@ export const clearPlayList = function ({ commit, state }) {
   commit(types.SET_CURRENT_INDEX, -1)
   commit(types.SET_PLAYING_STATE, false)
 }
+
+// 保存播放历史
+export const savePlayHistory = function ({ commit }, query) {
+  commit(types.SET_PLAY_HISTORY, savePlay(query))
+}

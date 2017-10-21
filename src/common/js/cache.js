@@ -4,6 +4,9 @@ import storage from 'good-storage'
 const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LENGTH = 15
 
+const PLAY_KEY = '__play__'
+const PLAY_MAX_LENGTH = 15
+
 // 加载浏览器中的搜索历史缓存
 export function loadSearch(query) {
   return storage.get(SEARCH_KEY, [])
@@ -33,6 +36,10 @@ export function deleteSearch(query) {
 export function clearSearch() {
   storage.remove(SEARCH_KEY)
   return []
+}
+
+export function savePlay(song) {
+  let songs = storage.get()
 }
 
 // 插入数据 数据顺序从新到旧 不超过最大长度

@@ -93,7 +93,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 // GitHub: https://github.com/HenrikJoreteg/create-keyframe-animation
 import animations from 'create-keyframe-animation'
 import Scroll from 'base/scroll/scroll'
@@ -262,6 +262,7 @@ export default {
     },
     canPlay() {
       this.songReady = true
+      this.savePlayHistory(this.song)
     },
     error() {
       // 加载失败时 不影响程序正常运行
@@ -407,7 +408,10 @@ export default {
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN'
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
   watch: {
     currentSong(newCurrentSong, oldCurrentSong) {
