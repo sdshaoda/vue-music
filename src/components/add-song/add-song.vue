@@ -12,6 +12,13 @@
       </div>
       <div class="shortcut" v-show="!query">
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
+        <div class="list-wrapper">
+          <scroll class="list-scroll" v-if="currentIndex===0" :data="playHistory">
+            <div class="list-inn">
+              <song-list :songs="playHistory"></song-list>
+            </div>
+          </scroll>
+        </div>
       </div>
       <div class="search-result" v-show="query">
         <suggest :query="query" showSinger="showSinger" @select="selectSuggest"></suggest>
@@ -24,6 +31,9 @@
 import SearchBox from 'base/search-box/search-box'
 import Suggest from 'components/suggest/suggest'
 import Switches from 'base/switches/switches'
+import Scroll from 'base/scroll/scroll'
+import SongList from 'base/song-list/song-list'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -37,6 +47,11 @@ export default {
       ],
       query: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'playHistory'
+    ])
   },
   methods: {
     show() {
@@ -58,7 +73,9 @@ export default {
   components: {
     SearchBox,
     Suggest,
-    Switches
+    Switches,
+    Scroll,
+    SongList
   }
 }
 </script>

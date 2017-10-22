@@ -39,7 +39,16 @@ export function clearSearch() {
 }
 
 export function savePlay(song) {
-  let songs = storage.get()
+  let songs = storage.get(PLAY_KEY, [])
+  insertToArray(songs, song, (item) => {
+    return item.id === song.id
+  }, PLAY_MAX_LENGTH)
+  storage.set(PLAY_KEY, songs)
+  return songs
+}
+
+export function loadPlay() {
+  return storage.get(PLAY_KEY, [])
 }
 
 // 插入数据 数据顺序从新到旧 不超过最大长度
