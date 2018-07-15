@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="search-result" v-show="query">
-        <suggest :query="query" showSinger="showSinger" @select="selectSuggest"></suggest>
+        <suggest :query="query" :showSinger="showSinger" @select="selectSuggest"></suggest>
       </div>
     </div>
   </transition>
