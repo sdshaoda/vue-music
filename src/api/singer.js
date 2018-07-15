@@ -1,5 +1,5 @@
-import jsonp from 'common/js/jsonp'
 import { commonParams, options } from './config'
+import jsonp from 'common/js/jsonp'
 
 // 获取 歌手列表
 export function getSingerList () {
