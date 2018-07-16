@@ -8,7 +8,7 @@
 import MusicList from 'components/music-list/music-list'
 import { getSongList } from 'api/recommend'
 import { ERR_OK } from 'api/config'
-import { createSong } from 'common/js/song'
+import { createSong, isValidMusic, processSongsUrl } from 'common/js/song'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -41,14 +41,17 @@ export default {
       getSongList(this.disc.dissid).then((res) => {
         if (res.code === ERR_OK) {
           // 格式化数据结构
-          this.songs = this._normalizeSongs(res.cdlist[0].songlist)
+          // this.songs = this._normalizeSongs(res.cdlist[0].songlist)
+          processSongsUrl(this._normalizeSongs(res.cdlist[0].songlist)).then((songs) => {
+            this.songs = songs
+          })
         }
       })
     },
     _normalizeSongs(list) {
       let ret = []
       list.forEach((musicData) => {
-        if (musicData.songid && musicData.albumid) {
+        if (isValidMusic(musicData)) {
           // 使用工厂方法 createSong 生成歌曲的数据结构
           ret.push(createSong(musicData))
         }

@@ -12,6 +12,7 @@ var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
 var axios = require('axios')
+const bodyParser = require('body-parser')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -40,12 +41,13 @@ apiRoutes.get('/getDiscList', function (req, res) {
   }).then((response) => {
     res.json(response.data)
   }).catch((e) => {
-    console.log(e)
+    console.error(e)
   })
 })
 
 apiRoutes.get('/getCdInfo', function (req, res) {
   var url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+
   axios.get(url, {
     headers: {
       referer: 'https://c.y.qq.com/',
@@ -89,7 +91,25 @@ apiRoutes.get('/lyric', function (req, res) {
     }
     res.json(ret)
   }).catch((e) => {
-    console.log(e)
+    console.error(e)
+  })
+})
+
+app.post('/api/getPurlUrl', bodyParser.json(), function (req, res) {
+  const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+
+  console.log(req.body)
+  axios.post(url, req.body, {
+    headers: {
+      referer: 'https://y.qq.com/',
+      origin: 'https://y.qq.com',
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+  }).then((response) => {
+    console.log(response.data)
+    res.json(response.data)
+  }).catch((e) => {
+    console.error(e)
   })
 })
 

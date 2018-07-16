@@ -13,7 +13,7 @@
         </div>
         <scroll class="list-content" ref="listContent" :data="sequenceList">
           <transition-group name="list" tag="ul">
-            <li class="item" ref="listItem" v-for="(item, index) in sequenceList" :key="item" @click="selectItem(item, index)">
+            <li class="item" ref="listItem" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{item.name}}</span>
               <span class="like">
