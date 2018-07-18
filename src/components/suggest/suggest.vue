@@ -20,7 +20,7 @@
 <script>
 import { search } from 'api/search'
 import { ERR_OK } from 'api/config'
-import { createSong } from 'common/js/song'
+import { createSong, isValidMusic, processSongsUrl } from 'common/js/song'
 import Singer from 'common/js/singer'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
@@ -57,7 +57,10 @@ export default {
       this.$refs.suggest.scrollTo(0, 0)
       search(this.query, this.page, this.showSinger, PER_PAGE).then((res) => {
         if (res.code === ERR_OK) {
-          this.result = this._getResult(res.data)
+          // this.result = this._getResult(res.data)
+          this._getResult(res.data).then((result) => {
+            this.result = result
+          })
           this._checkMore(res.data)
         }
       })
@@ -71,7 +74,10 @@ export default {
       // 本来想复用this.search()函数的，但是第一次搜索的逻辑特殊，只好分开写了
       search(this.query, this.page, this.showSinger, PER_PAGE).then((res) => {
         if (res.code === ERR_OK) {
-          this.result = this.result.concat(this._getResult(res.data))
+          // this.result = this.result.concat(this._getResult(res.data))
+          this._getResult(res.data).then((result) => {
+            this.result = this.result.concat(result)
+          })
           this._checkMore(res.data)
         }
       })
@@ -135,16 +141,18 @@ export default {
       }
 
       if (data.song) {
-        ret = ret.concat(this._normalizeSongs(data.song.list))
+        // ret = ret.concat(this._normalizeSongs(data.song.list))
+        return processSongsUrl(this._normalizeSongs(data.song.list)).then((songs) => {
+          ret = ret.concat(songs)
+          return ret
+        })
       }
-
-      return ret
     },
     // 歌曲数据格式化
     _normalizeSongs(list) {
       let ret = []
       list.forEach((musicData) => {
-        if (musicData.songid && musicData.albumid) {
+        if (isValidMusic(musicData)) {
           ret.push(createSong(musicData))
         }
       })
