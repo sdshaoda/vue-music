@@ -2,6 +2,8 @@ import { commonParams, options } from './config'
 import jsonp from 'common/js/jsonp'
 import axios from 'axios'
 
+const dev = process.env.NODE_ENV !== 'production'
+
 // 获取 推荐
 export function getRecommend() {
   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
@@ -19,7 +21,7 @@ export function getRecommend() {
 
 // 获取 歌单列表
 export function getDiscList() {
-  const url = '/api/getDiscList'
+  const url = dev ? '/api/getDiscList' : 'http://music.shaoda.tech/api/getDiscList'
 
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',
@@ -42,7 +44,7 @@ export function getDiscList() {
 
 // 获取歌单歌曲
 export function getSongList(disstid) {
-  const url = '/api/getCdInfo'
+  const url = dev ? '/api/getCdInfo' : 'http://music.shaoda.tech/api/getCdInfo'
 
   const data = Object.assign({}, commonParams, {
     disstid,
