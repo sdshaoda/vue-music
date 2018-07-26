@@ -1,5 +1,6 @@
 import { commonParams, options } from './config'
 import jsonp from 'common/js/jsonp'
+import axios from 'axios'
 
 // 获取热门搜索词
 export function getHotKeys() {
@@ -15,7 +16,7 @@ export function getHotKeys() {
 
 // 搜索歌曲或歌手
 export function search(query, page, zhida = false, perpage = 20) {
-  const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+  const url = '/api/search'
 
   const data = Object.assign({}, commonParams, {
     w: query,
@@ -33,8 +34,13 @@ export function search(query, page, zhida = false, perpage = 20) {
     remoteplace: 'txt.mqq.all',
     uid: 0,
     needNewCode: 1,
-    platform: 'h5'
+    platform: 'h5',
+    format: 'json'
   })
 
-  return jsonp(url, data, options)
+  return axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
 }
