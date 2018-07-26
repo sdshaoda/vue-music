@@ -1,8 +1,8 @@
-import { commonParams, options } from './config'
+import { commonParams, options, domain } from './config'
 import jsonp from 'common/js/jsonp'
 import axios from 'axios'
 
-const dev = process.env.NODE_ENV !== 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 
 // 获取 推荐
 export function getRecommend() {
@@ -21,7 +21,7 @@ export function getRecommend() {
 
 // 获取 歌单列表
 export function getDiscList() {
-  const url = dev ? '/api/getDiscList' : 'http://music.shaoda.tech/api/getDiscList'
+  const url = (isProduction ? domain : '') + '/api/getDiscList'
 
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',
@@ -44,7 +44,7 @@ export function getDiscList() {
 
 // 获取歌单歌曲
 export function getSongList(disstid) {
-  const url = dev ? '/api/getCdInfo' : 'http://music.shaoda.tech/api/getCdInfo'
+  const url = (isProduction ? domain : '') + '/api/getCdInfo'
 
   const data = Object.assign({}, commonParams, {
     disstid,

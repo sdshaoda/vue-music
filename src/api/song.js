@@ -1,12 +1,12 @@
-import { commonParams, ERR_OK } from './config'
+import { commonParams, ERR_OK, domain } from './config'
 import { getUid } from 'common/js/uid'
 import axios from 'axios'
 
-const dev = process.env.NODE_ENV !== 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 
 // 获取歌词
 export function getLyric(mid) {
-  const url = dev ? '/api/lyric' : 'http://music.shaoda.tech/api/lyric'
+  const url = (isProduction ? domain : '') + '/api/lyric'
 
   const data = Object.assign({}, commonParams, {
     songmid: mid,
@@ -27,7 +27,7 @@ export function getLyric(mid) {
 
 // 批量获取歌曲资源URL
 export function getSongsUrl(songs) {
-  const url = dev ? '/api/getPurlUrl' : 'http://music.shaoda.tech/api/getPurlUrl'
+  const url = (isProduction ? domain : '') + '/api/getPurlUrl'
 
   let mids = []
   let types = []
