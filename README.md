@@ -2,6 +2,8 @@
 
 A mobile Web application developed by Vue.js stack.
 
+You can visit http://music.shaoda.tech or http://106.15.91.190:8888.
+
 ## Build Setup
 
 ``` bash
