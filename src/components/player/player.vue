@@ -88,7 +88,7 @@
       </div>
     </transition>
     <playlist ref="playlist"></playlist>
-    <audio ref="audio" :src="currentSong.url" @canplay="canPlay" @error="error" @timeupdate="timeUpdate" @ended="ended"></audio>
+    <audio ref="audio" @playing="ready" @error="error" @timeupdate="timeUpdate" @ended="ended" @pause="pause"></audio>
   </div>
 </template>
 
@@ -260,13 +260,28 @@ export default {
         this.currentLyric.seek(0)
       }
     },
-    canPlay() {
+    ready() {
+      clearTimeout(this.timer)
       this.songReady = true
-      this.savePlayHistory(this.song)
+      this.canLyricPlay = true
+      this.savePlayHistory(this.currentSong)
+      if (this.currentLyric) {
+        this.currentLyric.seek(this.currentTime * 1000)
+      }
     },
     error() {
+      // clearTimeout(this.timer)
+      console.error('error')
       // 加载失败时 不影响程序正常运行
       this.songReady = true
+      // 当前歌曲资源不可用时，自动切换到下一首歌
+      // this.timer = setTimeout(() => { this.next() }, 3000)
+    },
+    pause() {
+      this.setPlayingState(false)
+      if (this.currentLyric) {
+        this.currentLyric.stop()
+      }
     },
     timeUpdate(e) {
       this.currentTime = e.target.currentTime
@@ -289,6 +304,7 @@ export default {
       const currentTime = this.currentSong.duration * percent
       this.$refs.audio.currentTime = currentTime
       if (!this.playing) {
+        // 暂停时拖动 变为播放状态
         this.setPlayingState(true)
       }
       if (this.currentLyric) {
@@ -415,23 +431,34 @@ export default {
   },
   watch: {
     currentSong(newCurrentSong, oldCurrentSong) {
-      if (!newCurrentSong.id) {
-        return
-      }
-      if (newCurrentSong.id === oldCurrentSong.id) {
-        return
-      }
+      this.songReady = false
+      this.canLyricPlay = false
       if (this.currentLyric) {
         // 清除当前歌词的播放
         this.currentLyric.stop()
+        this.currentLyric = null
+        this.currentTime = 0
+        this.playingLyric = ''
+        this.currentLineNum = 0
       }
-      setTimeout(() => {
+      if (!newCurrentSong.id || !newCurrentSong.url || newCurrentSong.id === oldCurrentSong.id) {
+        this.$refs.audio.pause()
+        this.$refs.audio.src = ''
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.songReady = true
+        }, 5000)
+      } else {
+        this.$refs.audio.src = newCurrentSong.url
         this.$refs.audio.play()
         this.getLyric()
-      }, 1000)
+      }
     },
     // 根据 playing 切换 audio 的播放状态
     playing(newPlaying) {
+      if (!this.songReady) {
+        return
+      }
       const audio = this.$refs.audio
       this.$nextTick(() => {
         newPlaying ? audio.play() : audio.pause()
