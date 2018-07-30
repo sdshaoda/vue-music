@@ -75,6 +75,8 @@ export function processSongsUrl(songs) {
       res.url_mid.data.midurlinfo.forEach((info, index) => {
         songs[index].url = info.purl
       })
+      // 过滤掉没有歌曲URL资源的
+      songs = songs.filter(song => song.url.length)
     }
     return songs
   })
