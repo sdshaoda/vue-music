@@ -15,4 +15,4 @@ export const options = {
 // 返回'成功'，语义化，便于维护
 export const ERR_OK = 0
 
-export const domain = 'http://music.shaoda.tech'
+export const domain = 'https://music.shaoda.tech'
