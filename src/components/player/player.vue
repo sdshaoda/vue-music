@@ -230,7 +230,6 @@ export default {
         if (!this.playing) {
           this.setPlayingState(true)
         }
-        this.songReady = false
       }
     },
     prev() {
@@ -249,7 +248,6 @@ export default {
         if (!this.playing) {
           this.setPlayingState(true)
         }
-        this.songReady = false
       }
     },
     loop() {
@@ -270,12 +268,12 @@ export default {
       }
     },
     error() {
-      // clearTimeout(this.timer)
-      console.error('error')
+      clearTimeout(this.timer)
+      console.error('error song')
       // 加载失败时 不影响程序正常运行
       this.songReady = true
       // 当前歌曲资源不可用时，自动切换到下一首歌
-      // this.timer = setTimeout(() => { this.next() }, 3000)
+      this.timer = setTimeout(() => { this.next() }, 3000)
     },
     pause() {
       this.setPlayingState(false)
@@ -442,15 +440,15 @@ export default {
         this.currentLineNum = 0
       }
       if (!newCurrentSong.id || !newCurrentSong.url || newCurrentSong.id === oldCurrentSong.id) {
-        this.$refs.audio.pause()
         this.$refs.audio.src = ''
+        this.$refs.audio.pause()
+      } else {
+        this.$refs.audio.src = newCurrentSong.url
+        this.$refs.audio.play()
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.songReady = true
         }, 5000)
-      } else {
-        this.$refs.audio.src = newCurrentSong.url
-        this.$refs.audio.play()
         this.getLyric()
       }
     },
