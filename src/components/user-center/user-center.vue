@@ -61,7 +61,7 @@ export default {
     z-index: 50
     .icon-back
       display: block
-      pdding: 10px
+      padding: 10px
       font-size: $font-size-large-x
       color: $color-theme
   .switches-wrapper
