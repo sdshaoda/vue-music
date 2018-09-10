@@ -18,6 +18,7 @@
 
 <script>
 import Switches from 'base/switches/switches'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -28,6 +29,12 @@ export default {
         { name: '最近听的' }
       ]
     }
+  },
+  computed: {
+    ...mapGetters([
+      'favoriteList',
+      'playHistory'
+    ])
   },
   methods: {
     switchItem(index) {

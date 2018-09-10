@@ -42,8 +42,8 @@ export default {
       showSinger: false,
       currentIndex: 0,
       switches: [
-        {name: '最近播放'},
-        {name: '搜索历史'}
+        { name: '最近播放' },
+        { name: '搜索历史' }
       ],
       query: ''
     }
