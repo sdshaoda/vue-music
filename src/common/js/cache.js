@@ -5,7 +5,7 @@ const SEARCH_KEY = '__search__'
 const SEARCH_MAX_LENGTH = 15
 
 const PLAY_KEY = '__play__'
-const PLAY_MAX_LENGTH = 15
+const PLAY_MAX_LENGTH = 200
 
 const FAVORITE_KEY = '__favorite__'
 const FAVORITE_MAX_LENGTH = 200

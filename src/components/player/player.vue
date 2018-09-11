@@ -262,7 +262,7 @@ export default {
     },
     canPlay() {
       this.songReady = true
-      this.savePlayHistory(this.song)
+      this.savePlayHistory(this.currentSong)
     },
     error() {
       // 加载失败时 不影响程序正常运行

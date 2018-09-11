@@ -14,8 +14,8 @@
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
         <div class="list-wrapper">
           <scroll class="list-scroll" v-if="currentIndex===0" :data="playHistory">
-            <div class="list-inn">
-              <song-list :songs="playHistory"></song-list>
+            <div class="list-inner">
+              <song-list :songs="playHistory" @select="selectSong"></song-list>
             </div>
           </scroll>
         </div>
