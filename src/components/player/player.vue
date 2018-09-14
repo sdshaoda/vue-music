@@ -421,6 +421,7 @@ export default {
       if (newCurrentSong.id === oldCurrentSong.id) {
         return
       }
+      document.title = `${newCurrentSong.name} - ${newCurrentSong.singer}`
       if (this.currentLyric) {
         // 清除当前歌词的播放
         this.currentLyric.stop()
