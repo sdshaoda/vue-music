@@ -53,12 +53,8 @@ const UserCenter = (resolve) => {
 }
 
 export default new Router({
+  mode: 'history',
   routes: [
-    {
-      // 首页重定向到推荐页
-      path: '/',
-      redirect: '/recommend'
-    },
     {
       // 推荐页
       path: '/recommend',
@@ -112,6 +108,10 @@ export default new Router({
       // 个人中心
       path: '/user',
       component: UserCenter
+    },
+    {
+      path: '/(.*?)',
+      redirect: '/recommend'
     }
   ]
 })
