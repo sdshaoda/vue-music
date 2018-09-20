@@ -105,6 +105,14 @@ apiRoutes.get('/search', function (req, res) {
 
 app.use('/api', apiRoutes)
 
+app.get('/[a-zA-Z0-9]+', function (req, res) {
+  res.redirect('/')
+})
+
+app.get('/[a-zA-Z0-9]+/[a-zA-Z0-9]+', function (req, res) {
+  res.redirect('/')
+})
+
 app.use(express.static('./dist'))
 
 const port = process.env.PORT || config.build.port
