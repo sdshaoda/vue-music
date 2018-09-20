@@ -121,6 +121,9 @@ export const searchMixin = {
     queryChange(newQuery) {
       this.query = newQuery
     },
+    addQuery(query) {
+      this.$refs.searchBox.setQuery(query)
+    },
     ...mapActions([
       'saveSearchHistory',
       'deleteSearchHistory'

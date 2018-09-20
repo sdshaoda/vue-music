@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="search-box-wrapper">
-        <search-box placeholder="搜索歌曲" @query="search"></search-box>
+        <search-box ref="searchBox" placeholder="搜索歌曲" @query="search"></search-box>
       </div>
       <div class="shortcut" v-show="!query">
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
@@ -16,6 +16,11 @@
           <scroll class="list-scroll" v-if="currentIndex===0" :data="playHistory">
             <div class="list-inner">
               <song-list :songs="playHistory" @select="selectSong"></song-list>
+            </div>
+          </scroll>
+          <scroll class="list-scroll" v-if="currentIndex===1" :data="searchHistory">
+            <div class="list-inner">
+              <search-list @deleteOne="deleteSearchHistory" @select="addQuery" :searches="searchHistory"></search-list>
             </div>
           </scroll>
         </div>
@@ -28,15 +33,18 @@
 </template>
 
 <script>
+import { searchMixin } from 'common/js/mixin'
 import SearchBox from 'base/search-box/search-box'
 import Suggest from 'components/suggest/suggest'
 import Switches from 'base/switches/switches'
 import Scroll from 'base/scroll/scroll'
 import SongList from 'base/song-list/song-list'
+import SearchList from 'base/search-list/search-list'
 import Song from 'common/js/song'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  mixins: [searchMixin],
   data() {
     return {
       showFlag: false,
@@ -84,7 +92,8 @@ export default {
     Suggest,
     Switches,
     Scroll,
-    SongList
+    SongList,
+    SearchList
   }
 }
 </script>
