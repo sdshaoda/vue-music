@@ -11,7 +11,7 @@
             </span>
           </h1>
         </div>
-        <scroll class="list-content" ref="listContent" :data="sequenceList">
+        <scroll class="list-content" ref="listContent" :data="sequenceList" :refreshDelay="refreshDelay">
           <transition-group name="list" tag="ul">
             <li class="item" ref="listItem" v-for="(item, index) in sequenceList" :key="index" @click="selectItem(item, index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
@@ -53,7 +53,8 @@ export default {
   mixins: [playModeMixin],
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      refreshDelay: 100
     }
   },
   computed: {
