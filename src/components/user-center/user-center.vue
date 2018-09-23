@@ -33,8 +33,10 @@ import Scroll from 'base/scroll/scroll'
 import SongList from 'base/song-list/song-list'
 import Song from 'common/js/song'
 import { mapGetters, mapActions } from 'vuex'
+import { playListMixin } from 'common/js/mixin'
 
 export default {
+  mixins: [playListMixin],
   data() {
     return {
       currentIndex: 0,
@@ -51,6 +53,12 @@ export default {
     ])
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.listWrapper.style.bottom = bottom
+      this.$refs.favoriteList && this.$refs.favoriteList.refresh()
+      this.$refs.playList && this.$refs.playList.refresh()
+    },
     switchItem(index) {
       this.currentIndex = index
     },
