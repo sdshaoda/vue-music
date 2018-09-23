@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <div class="user-center">
-      <div class="back">
+      <div class="back" @click="$router.back()">
         <i class="icon-back"></i>
       </div>
       <div class="switches-wrapper">
@@ -11,14 +11,28 @@
         <i class="icon-play"></i>
         <div class="text">随机播放全部</div>
       </div>
-      <div class="list-wrapper" ref="listWrapper"></div>
+      <div class="list-wrapper" ref="listWrapper">
+        <scroll ref="favoriteList" class="list-scroll" v-if="currentIndex===0" :data="favoriteList">
+          <div class="list-inner">
+            <song-list :songs="favoriteList" @select="selectSong"></song-list>
+          </div>
+        </scroll>
+        <scroll ref="playList" class="list-scroll" v-if="currentIndex===1" :data="playHistory">
+          <div class="list-inner">
+            <song-list :songs="playHistory" @select="selectSong"></song-list>
+          </div>
+        </scroll>
+      </div>
     </div>
   </transition>
 </template>
 
 <script>
 import Switches from 'base/switches/switches'
-import { mapGetters } from 'vuex'
+import Scroll from 'base/scroll/scroll'
+import SongList from 'base/song-list/song-list'
+import Song from 'common/js/song'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
@@ -39,10 +53,18 @@ export default {
   methods: {
     switchItem(index) {
       this.currentIndex = index
-    }
+    },
+    selectSong(song) {
+      this.insertSong(new Song(song))
+    },
+    ...mapActions([
+      'insertSong'
+    ])
   },
   components: {
-    Switches
+    Switches,
+    Scroll,
+    SongList
   }
 }
 </script>
