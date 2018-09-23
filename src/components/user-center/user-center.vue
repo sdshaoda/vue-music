@@ -7,7 +7,7 @@
       <div class="switches-wrapper">
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
       </div>
-      <div class="play-btn" ref="playBtn">
+      <div class="play-btn" ref="playBtn" @click="random">
         <i class="icon-play"></i>
         <div class="text">随机播放全部</div>
       </div>
@@ -57,8 +57,18 @@ export default {
     selectSong(song) {
       this.insertSong(new Song(song))
     },
+    random() {
+      let list = this.currentIndex === 0 ? this.favoriteList : this.playHistory
+      list = list.map((item) => {
+        return new Song(item)
+      })
+      this.randomPlay({
+        list
+      })
+    },
     ...mapActions([
-      'insertSong'
+      'insertSong',
+      'randomPlay'
     ])
   },
   components: {
