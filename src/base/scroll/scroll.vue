@@ -60,7 +60,7 @@ export default {
       })
 
       if (this.listenScroll) {
-        // _this 为vue的实例
+        // _this 为此 Vue 实例组件
         let _this = this
         this.scroll.on('scroll', (pos) => {
           // this 为 better-scroll 的实例
