@@ -14,6 +14,7 @@ fastclick.attach(document.body)
 
 // 懒加载
 Vue.use(VueLazyLoad, {
+  // webpack 会 require 图片转化为 base64
   loading: require('common/image/default.png')
 })
 

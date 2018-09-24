@@ -9,12 +9,12 @@ import BScroll from 'better-scroll'
 
 export default {
   props: {
-    // 截流，是否派发某类型的滚动事件
+    // 截流，非实时派发 scroll event
     probeType: {
       type: Number,
       default: 1
     },
-    // 是否派发 click 事件
+    // 是否派发 click event
     click: {
       type: Boolean,
       default: true
@@ -23,7 +23,7 @@ export default {
       type: Array,
       default: null
     },
-    // 是否监听滚动事件
+    // 是否监听 scroll event
     listenScroll: {
       type: Boolean,
       default: false

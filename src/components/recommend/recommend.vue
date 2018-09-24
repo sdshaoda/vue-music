@@ -2,13 +2,12 @@
   <div class="recommend" ref="recommend">
     <scroll ref="scroll" class="recommend-content" :data="discList">
       <div>
-        <!--在异步获取到recommends数据后，才渲染DOM-->
+        <!-- 异步获取到 recommends 数据后，才渲染 DOM -->
         <div v-if="recommends.length" class="slider-wrapper">
-          <!--轮播图组件-->
           <slider>
             <div v-for="(item, index) in recommends" :key="index">
               <a :href="item.linkUrl">
-                <!-- 修复 fastclick 图片不能点击 -->
+                <!-- 修复 fastclick 图片不能点击; 图片加载后 refresh scroll -->
                 <img class="needsclick" @load="loadImage" :src="item.picUrl">
               </a>
             </div>

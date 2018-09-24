@@ -6,7 +6,7 @@
       </slot>
     </div>
     <div class="dots">
-      <span class="dot" v-for="(item, index) in dots" :key="index" :class="{active:currentPageIndex === index}"></span>
+      <span class="dot" v-for="(item, index) in dots" :key="index" :class="{active: currentPageIndex === index}"></span>
     </div>
   </div>
 </template>
@@ -17,12 +17,6 @@ import BScroll from 'better-scroll'
 import { addClass } from 'common/js/dom'
 
 export default {
-  data() {
-    return {
-      dots: [],
-      currentPageIndex: 0
-    }
-  },
   props: {
     loop: {
       type: Boolean,
@@ -35,6 +29,12 @@ export default {
     interval: {
       type: Number,
       default: 4000
+    }
+  },
+  data() {
+    return {
+      dots: [],
+      currentPageIndex: 0
     }
   },
   mounted() {
@@ -50,7 +50,7 @@ export default {
       }
     }, 20)
 
-    // 窗口大小改变后，重设slider
+    // 窗口大小改变后，重设 slider
     window.addEventListener('resize', () => {
       if (!this.slider) {
         return
@@ -67,6 +67,7 @@ export default {
       this.children = this.$refs.sliderGroup.children
 
       let width = 0
+      // clientWidth 包括 content + padding
       let sliderWidth = this.$refs.slider.clientWidth
       for (let i = 0; i < this.children.length; i++) {
         let child = this.children[i]
@@ -87,16 +88,16 @@ export default {
     },
     _initSlider() {
       this.slider = new BScroll(this.$refs.slider, {
-        scrollX: true,
-        scrollY: false,
-        momentum: false,
-        snap: true,
-        snapLoop: this.loop,
-        snapThreshold: 0.3,
-        snapSpeed: 400
+        scrollX: true,          // 允许横向滚动
+        scrollY: false,         // 不允许纵向滚动
+        momentum: false,        // 无惯性
+        snap: true,             // slide专用
+        snapLoop: this.loop,    // 会添加首尾两个 DOM
+        snapThreshold: 0.3,     // 滚动阈值
+        snapSpeed: 400          // 滚动速度
       })
 
-      // 切换到下一张时触发
+      // 切换到下一张时触发 better-scroll event
       this.slider.on('scrollEnd', () => {
         let pageIndex = this.slider.getCurrentPage().pageX
         if (this.loop) {
@@ -117,6 +118,7 @@ export default {
         pageIndex += 1
       }
       this.timer = setTimeout(() => {
+        // goToPage(x, y, time, easing) is from better-scroll
         this.slider.goToPage(pageIndex, 0, 400)
       }, this.interval)
     }
