@@ -152,7 +152,8 @@ export default {
           return
         }
       }
-      this.currentIndex = 0
+      // 底部且超出
+      this.currentIndex = listHeight - 2
     },
     diff(newDiff) {
       let fixedTop = (newDiff > 0 && newDiff < TITLE_HEIGHT) ? newDiff - TITLE_HEIGHT : 0
