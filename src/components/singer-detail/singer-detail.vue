@@ -5,7 +5,7 @@
   </transition>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { mapGetters } from 'vuex'
 import { getSingerDetail } from 'api/singer'
 import { ERR_OK } from 'api/config'
@@ -72,7 +72,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
   @import "~common/stylus/variable"
 
   // Vue 为组件过渡状态提供的类名

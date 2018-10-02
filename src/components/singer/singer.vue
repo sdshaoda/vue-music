@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { getSingerList } from 'api/singer'
 import { ERR_OK } from 'api/config'
 import { playListMixin } from 'common/js/mixin'
@@ -109,7 +109,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
   .singer
     position: fixed
     top: 88px

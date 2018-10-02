@@ -1,10 +1,10 @@
 <template>
   <scroll class="listview" ref="listview" :data="data" :listenScroll="true" :probeType="3" @scroll="scroll">
     <ul>
-      <li v-for="(group, index) in data" :key="index" class="list-group" ref="listGroup">
+      <li v-for="group in data" :key="group.title" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="(item, index) in group.items" :key="index" class="list-group-item" @click="selectItem(item)">
+          <li v-for="item in group.items" :key="item.id" class="list-group-item" @click="selectItem(item)">
             <img class="avatar" v-lazy="item.smallAvatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -14,7 +14,7 @@
     <!-- 右侧的快速索引 -->
     <div class="list-shortcut" @touchstart.stop.prevent="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
       <ul>
-        <li v-for="(item, index) in shortcutList" :key="index" :data-index="index" class="item" :class="{'current': currentIndex === index}">
+        <li v-for="(item, index) in shortcutList" :key="item" :data-index="index" class="item" :class="{'current': currentIndex === index}">
           {{item}}
         </li>
       </ul>
@@ -29,7 +29,7 @@
   </scroll>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 // import { getData } from 'common/js/dom'
@@ -171,7 +171,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
   @import "~common/stylus/variable"
 
   .listview

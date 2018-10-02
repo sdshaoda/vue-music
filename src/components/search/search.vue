@@ -11,7 +11,7 @@
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul>
-              <li class="item" v-for="(item, index) in hotKeys" :key="index" @click="hotKeyQuery(item.k)">
+              <li class="item" v-for="item in hotKeys" :key="item.n" @click="hotKeyQuery(item.k)">
                 <span>{{item.k}}</span>
               </li>
             </ul>
@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { playListMixin, searchMixin } from 'common/js/mixin'
 import SearchBox from 'base/search-box/search-box'
 import SearchList from 'base/search-list/search-list'
@@ -112,7 +112,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 @import "~common/stylus/variable"
 @import "~common/stylus/mixin"
 

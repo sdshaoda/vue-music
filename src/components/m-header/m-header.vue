@@ -8,11 +8,11 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 export default {}
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
 

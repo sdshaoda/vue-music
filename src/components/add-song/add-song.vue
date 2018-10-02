@@ -58,8 +58,8 @@ export default {
       showSinger: false,
       currentIndex: 0,
       switches: [
-        { name: '最近播放' },
-        { name: '搜索历史' }
+        { id: 1, name: '最近播放' },
+        { id: 2, name: '搜索历史' }
       ],
       query: ''
     }
@@ -118,7 +118,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped lang="stylus">
 @import "~common/stylus/variable"
 @import "~common/stylus/mixin"
 

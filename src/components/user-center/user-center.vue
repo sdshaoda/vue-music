@@ -45,8 +45,8 @@ export default {
     return {
       currentIndex: 0,
       switches: [
-        { name: '我喜欢的' },
-        { name: '最近听的' }
+        { id: 1, name: '我喜欢的' },
+        { id: 2, name: '最近听的' }
       ]
     }
   },

@@ -6,13 +6,12 @@
       </slot>
     </div>
     <div class="dots">
-      <span class="dot" v-for="(item, index) in dots" :key="index" :class="{active: currentPageIndex === index}"></span>
+      <span class="dot" v-for="(item, index) in dots" :key="item" :class="{active: currentPageIndex === index}"></span>
     </div>
   </div>
 </template>
 
-
-<script tyep="text/ecmascript-6">
+<script>
 import BScroll from 'better-scroll'
 import { addClass } from 'common/js/dom'
 
@@ -33,7 +32,7 @@ export default {
   },
   data() {
     return {
-      dots: [],
+      dots: 0,
       currentPageIndex: 0
     }
   },
@@ -84,7 +83,7 @@ export default {
       this.$refs.sliderGroup.style.width = width + 'px'
     },
     _initDots() {
-      this.dots = new Array(this.children.length)
+      this.dots = this.children.length
     },
     _initSlider() {
       this.slider = new BScroll(this.$refs.slider, {
@@ -126,8 +125,7 @@ export default {
 }
 </script>
 
-
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 	@import "~common/stylus/variable"
 
 	.slider

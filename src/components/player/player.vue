@@ -28,7 +28,7 @@
           <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
-                <p class="text" :class="{'current': currentLineNum === index}" ref="lyricLine" v-for="(line, index) in currentLyric.lines" :key="index">{{line.txt}}</p>
+                <p class="text" :class="{'current': currentLineNum === index}" ref="lyricLine" v-for="(line, index) in currentLyric.lines" :key="line.time">{{line.txt}}</p>
               </div>
             </div>
           </scroll>
@@ -92,7 +92,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 // GitHub: https://github.com/HenrikJoreteg/create-keyframe-animation
 import animations from 'create-keyframe-animation'
@@ -448,7 +448,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 @import "~common/stylus/variable"
 @import "~common/stylus/mixin"
 

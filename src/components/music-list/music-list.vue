@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { playListMixin } from 'common/js/mixin'
 import Scroll from 'base/scroll/scroll'
 import SongList from 'base/song-list/song-list'
@@ -159,7 +159,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 @import "~common/stylus/variable"
 @import "~common/stylus/mixin"
 

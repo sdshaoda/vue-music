@@ -1,7 +1,7 @@
 <template>
   <scroll class="suggest" :data="result" :pullup="pullup" :beforeScroll="beforeScroll" @scrollToEnd="searchMore" @beforeScroll="blurInput" ref="suggest">
     <ul class="suggest-list">
-      <li class="suggest-item" v-for="(item, index) in result" :key="index" @click="selectItem(item)">
+      <li class="suggest-item" v-for="item in result" :key="item.id" @click="selectItem(item)">
         <div class="icon">
           <i :class="getIconClass(item)"></i>
         </div>

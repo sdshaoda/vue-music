@@ -5,7 +5,7 @@
         <!-- 异步获取到 recommends 数据后，才渲染 DOM -->
         <div v-if="recommends.length" class="slider-wrapper">
           <slider>
-            <div v-for="(item, index) in recommends" :key="index">
+            <div v-for="item in recommends" :key="item.id">
               <a :href="item.linkUrl">
                 <!-- 修复 fastclick 图片不能点击; 图片加载后 refresh scroll -->
                 <img class="needsclick" @load="loadImage" :src="item.picUrl">
@@ -16,7 +16,7 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li v-for="(item, index) in discList" :key="index" class="item" @click="selectItem(item, index)">
+            <li v-for="(item, index) in discList" :key="item.dissid" class="item" @click="selectItem(item, index)">
               <div class="icon">
                 <img width="60" height="60" v-lazy="item.imgurl">
               </div>
@@ -39,7 +39,7 @@
 </template>
 
 
-<script type="text/ecmascript-6">
+<script>
 import { playListMixin } from 'common/js/mixin'
 import Loading from 'base/loading/loading'
 import Slider from 'base/slider/slider'
@@ -108,7 +108,7 @@ export default {
 </script>
 
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
   @import "~common/stylus/variable"
 
   .recommend

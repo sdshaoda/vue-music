@@ -2,12 +2,12 @@
   <div class="rank" ref="rank">
     <scroll class="toplist" :data="topList" ref="topList">
       <ul>
-        <li class="item" v-for="(item, index) in topList" :key="index" @click="selectItem(item)">
+        <li class="item" v-for="item in topList" :key="item.id" @click="selectItem(item)">
           <div class="icon">
             <img v-lazy="item.picUrl" alt="" width="100" height="100">
           </div>
           <ul class="songlist">
-            <li class="song" v-for="(song, index) in item.songList" :key="index">
+            <li class="song" v-for="(song, index) in item.songList" :key="song.songname">
               <span>{{index + 1}}</span>
               <span>{{song.songname}} - {{song.singername}}</span>
             </li>
@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { playListMixin } from 'common/js/mixin'
 import { getTopList } from 'api/rank'
 import { ERR_OK } from 'api/config'
@@ -70,7 +70,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 @import "~common/stylus/variable"
 @import "~common/stylus/mixin"
 

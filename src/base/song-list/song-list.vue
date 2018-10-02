@@ -1,7 +1,7 @@
 <template>
   <div class="song-list">
     <ul>
-      <li class="item" v-for="(song, index) in songs" :key="index" @click="selectItem(song, index)">
+      <li class="item" v-for="(song, index) in songs" :key="song.id" @click="selectItem(song, index)">
         <div class="rank" v-show="rank">
           <span :class="getRankClass(index)" v-text="getRankText(index)"></span>
         </div>
@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 export default {
   props: {
     songs: {
@@ -51,7 +51,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 @import "~common/stylus/variable"
 @import "~common/stylus/mixin"
 
