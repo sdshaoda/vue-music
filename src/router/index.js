@@ -120,7 +120,7 @@ export default new Router({
       component: UserCenter
     },
     {
-      path: '/(.*?)',
+      path: '*',
       redirect: '/recommend'
     }
   ]
